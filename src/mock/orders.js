@@ -1,6 +1,4 @@
 import {featureKeys, typeValues, orderValues} from '../const.js';
-import * as Utils from '../utils.js';
-
 
 const MIN_PRICE = 1000;
 const MAX_PRICE = 1000000;
@@ -29,16 +27,30 @@ titleKeys.forEach((it, i) => {
   typeTitles.set(it, titleValues[i]);
 });
 
+const getRandomInt = (min, max) => {
+  return min + Math.floor(Math.random() * (max - min));
+};
+
+const getRandomArrValue = (arr) => {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
+
+const getRandomArr = (arr, length = arr.length) => {
+  const randomArr = arr.slice();
+  randomArr.sort(() => Math.random() - 0.5);
+  return randomArr.slice(0, length);
+};
+
 const generateAvatarsArray = (COUNT_AVATARS) => {
   const arrAvatars = new Array(COUNT_AVATARS).fill(``).map((it, i) => (it = `img/avatars/user0${i}.png`));
-  return Utils.getRandomArr(arrAvatars);
+  return getRandomArr(arrAvatars);
 };
 
 const generateOrder = (avatar) => {
-  const locationX = Utils.getRandomInt(orderValues.pinCoords.minX, orderValues.pinCoords.maxX);
-  const locationY = Utils.getRandomInt(orderValues.pinCoords.minY, orderValues.pinCoords.maxY);
-  const offerType = Utils.getRandomArrValue([...typeTitles.keys()]);
-  const titleOffer = Utils.getRandomArrValue(typeTitles.get(offerType));
+  const locationX = getRandomInt(orderValues.pinCoords.minX, orderValues.pinCoords.maxX);
+  const locationY = getRandomInt(orderValues.pinCoords.minY, orderValues.pinCoords.maxY);
+  const offerType = getRandomArrValue([...typeTitles.keys()]);
+  const titleOffer = getRandomArrValue(typeTitles.get(offerType));
   return (
     {
       'author': {
@@ -47,15 +59,15 @@ const generateOrder = (avatar) => {
       'offer': {
         'title': titleOffer,
         'address': `${locationX}, ${locationY}`,
-        'price': Utils.getRandomInt(MIN_PRICE, MAX_PRICE),
+        'price': getRandomInt(MIN_PRICE, MAX_PRICE),
         'type': offerType,
-        'rooms': Utils.getRandomInt(MIN_ROOMS, MAX_ROOMS),
-        'guests': Utils.getRandomInt(MIN_GUEST, MAX_GUEST),
-        'checkin': Utils.getRandomArrValue(orderValues.timePeriods),
-        'checkout': Utils.getRandomArrValue(orderValues.timePeriods),
-        'features': Utils.getRandomArr(featureKeys, Utils.getRandomInt(MIN_FEATURES, featureKeys.length)),
+        'rooms': getRandomInt(MIN_ROOMS, MAX_ROOMS),
+        'guests': getRandomInt(MIN_GUEST, MAX_GUEST),
+        'checkin': getRandomArrValue(orderValues.timePeriods),
+        'checkout': getRandomArrValue(orderValues.timePeriods),
+        'features': getRandomArr(featureKeys, getRandomInt(MIN_FEATURES, featureKeys.length)),
         'description': ``,
-        'photos': Utils.getRandomArr(photos, photos.length)
+        'photos': getRandomArr(photos, photos.length)
       },
       'location': {
         'x': locationX,

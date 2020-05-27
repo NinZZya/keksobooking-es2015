@@ -9,20 +9,6 @@ export const isEnterKeycode = (evt) => {
   return evt.keyCode === ENTER_KEYCODE;
 };
 
-export const getRandomInt = (min, max) => {
-  return min + Math.floor(Math.random() * (max - min));
-};
-
-export const getRandomArrValue = (arr) => {
-  return arr[Math.floor(Math.random() * arr.length)];
-};
-
-export const getRandomArr = (arr, length = arr.length) => {
-  const randomArr = arr.slice();
-  randomArr.sort(() => Math.random() - 0.5);
-  return randomArr.slice(0, length);
-};
-
 export const getNextIndex = (elem, arr, startIndex = 0) => {
   let index = arr.indexOf(elem);
   switch (index) {
