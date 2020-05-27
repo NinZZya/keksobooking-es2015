@@ -10,7 +10,7 @@ export const isEnterKeycode = (evt) => {
 };
 
 export const getRandomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min) + min);
+  return min + Math.floor(Math.random() * (max - min));
 };
 
 export const getRandomArrValue = (arr) => {
@@ -44,4 +44,12 @@ export const getEndWord = (number, txt) => {
     index = cases[(number % 10 < 5) ? number % 10 : 5];
   }
   return txt[index];
+};
+
+export const createMapArray = (keys, values) => {
+  return keys.map((it, i) => ({key: it, value: values[i]}));
+};
+
+export const render = (container, template, place) => {
+  container.insertAdjacentHTML(place, template);
 };
