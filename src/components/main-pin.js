@@ -1,4 +1,6 @@
-export const createMainPinTemplate = () => {
+import * as Utils from '../utils.js';
+
+const createMainPinTemplate = () => {
   return (
     `<button class="map__pin map__pin--main" style="left: 570px; top: 375px;">
       <img src="img/muffin-red.svg" width="40" height="44" draggable="false" alt="Метка объявления">
@@ -12,3 +14,25 @@ export const createMainPinTemplate = () => {
     </button>`
   );
 };
+
+export default class MainPinComponent {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createMainPinTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = Utils.createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
