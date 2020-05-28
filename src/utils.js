@@ -1,5 +1,9 @@
 const ESK_KEYCODE = 27;
 const ENTER_KEYCODE = 13;
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
 
 export const isEscKeycode = (evt) => {
   return evt.keyCode === ESK_KEYCODE;
@@ -36,6 +40,20 @@ export const createMapArray = (keys, values) => {
   return keys.map((it, i) => ({key: it, value: values[i]}));
 };
 
-export const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
+export const render = (container, component, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(component.getElement());
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(component.getElement());
+      break;
+  }
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
 };
