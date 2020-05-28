@@ -42,7 +42,7 @@ const getRandomArr = (arr, length = arr.length) => {
 };
 
 const generateAvatarsArray = (COUNT_AVATARS) => {
-  const arrAvatars = new Array(COUNT_AVATARS).fill(``).map((it, i) => (it = `img/avatars/user0${i}.png`));
+  const arrAvatars = new Array(COUNT_AVATARS).fill(``).map((it, i) => (it = `img/avatars/user0${++i}.png`));
   return getRandomArr(arrAvatars);
 };
 
