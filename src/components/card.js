@@ -1,6 +1,10 @@
 import * as Utils from '../utils.js';
 import {orderValues} from '../const.js';
 
+
+// TODO: Change forEach on map
+
+
 const createCardTemplate = (card) => {
   return (
     `<article class="map__card popup">

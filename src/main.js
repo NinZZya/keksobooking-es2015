@@ -11,11 +11,15 @@ import NoticeComponent from './components/notice.js';
 
 import {generateOrders} from './mock/orders.js';
 
-const main = document.querySelector(`main`);
-const mapComponent = new MapComponent();
-Utils.render(main, mapComponent, Utils.RenderPosition.BEFOREEND);
+import AbstractComponent from './components/abstract-component.js';
 
-const map = main.querySelector(`.map`);
+// TODO если делаешь выборку дом то название переменной начинается с символа $
+
+const $main = document.querySelector(`main`);
+const mapComponent = new MapComponent();
+Utils.render($main, mapComponent, Utils.RenderPosition.BEFOREEND);
+
+const map = $main.querySelector(`.map`);
 const pinsComponent = new PinsComponent();
 Utils.render(map, pinsComponent, Utils.RenderPosition.BEFOREEND);
 const mainPinComponent = new MainPinComponent();
@@ -23,7 +27,7 @@ const mainPinComponent = new MainPinComponent();
 Utils.render(pinsComponent.getElement(), mainPinComponent, Utils.RenderPosition.BEFOREEND);
 Utils.render(map, new MapFilterComponent(filters, features), Utils.RenderPosition.BEFOREEND);
 const noticeComponent = new NoticeComponent();
-Utils.render(main, noticeComponent, Utils.RenderPosition.BEFOREEND);
+Utils.render($main, noticeComponent, Utils.RenderPosition.BEFOREEND);
 
 const orders = generateOrders(8);
 
@@ -33,3 +37,6 @@ mainPinComponent.getElement().addEventListener(`mousedown`, () => {
     Utils.render(pinsComponent.getElement(), new PinComponent(it), Utils.RenderPosition.BEFOREEND);
   });
 });
+
+const myAbstr = new AbstractComponent();
+myAbstr.getElement();

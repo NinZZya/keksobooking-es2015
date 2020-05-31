@@ -1,19 +1,28 @@
 const ESK_KEYCODE = 27;
 const ENTER_KEYCODE = 13;
-export const RenderPosition = {
+
+const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };
 
-export const isEscKeycode = (evt) => {
+const isEscKeycode = (evt) => {
   return evt.keyCode === ESK_KEYCODE;
 };
 
-export const isEnterKeycode = (evt) => {
+const isEnterKeycode = (evt) => {
   return evt.keyCode === ENTER_KEYCODE;
 };
 
-export const getNextIndex = (elem, arr, startIndex = 0) => {
+/**
+ * @description Возвращает следующий индекс для перехода, если конец массива или не найдено значение - 0
+ * @param {Object} elem Элемент массива <arr>
+ * @param {Object[]} arr Массив с элементами
+ * @param {number} startIndex С какого индекса начинать, в случае если конец массива или элемент не найден
+ * @returns {number} Следующий индекс для перехода
+ */
+
+const getNextIndex = (elem, arr, startIndex = 0) => {
   let index = arr.indexOf(elem);
   switch (index) {
     case -1:
@@ -25,7 +34,14 @@ export const getNextIndex = (elem, arr, startIndex = 0) => {
   }
 };
 
-export const getEndWord = (number, txt) => {
+/**
+* @description Возвращет склоненние слова или окончание для числа
+* @param {number} number Число, дя которого нужно найти склонение слов или окончания числа
+* @param {Object[]} txt Массив склонений слов или окончания числа
+* @returns {String} Слово или окончание для числа
+*/
+
+const getEndWord = (number, txt) => {
   const cases = [2, 0, 1, 1, 1, 2];
   let index = 0;
   if (number % 100 > 4 && number % 100 < 20) {
@@ -36,11 +52,13 @@ export const getEndWord = (number, txt) => {
   return txt[index];
 };
 
-export const createMapArray = (keys, values) => {
-  return keys.map((it, i) => ({key: it, value: values[i]}));
-};
-
-export const render = (container, component, place) => {
+/**
+ * @description Вставляет <component> в <container> на место <place>
+ * @param {Object} container DOM-элемент, куда необходимо вставить component
+ * @param {Object} component DOM-элемент, который необходимо вставить в container
+ * @param {string} place Место вставки в container значение afterbegin || beforeend
+ */
+const render = (container, component, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(component.getElement());
@@ -51,9 +69,23 @@ export const render = (container, component, place) => {
   }
 };
 
-export const createElement = (template) => {
+/**
+* @description Создает DOM элемент из шаблонной строки
+* @param {string} template Шаблон элемента в виде строки
+* @returns {Object} Возвращает DOM элемент
+*/
+
+const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
 
   return newElement.firstChild;
 };
+
+export {RenderPosition};
+export {isEnterKeycode};
+export {isEscKeycode};
+export {getNextIndex};
+export {getEndWord};
+export {render};
+export {createElement};

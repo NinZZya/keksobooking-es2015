@@ -1,33 +1,62 @@
-import * as Utils from './utils.js';
-
 const PIN_WIDTH = 65;
+const LOW_PREFIX = `до`;
+const HIGH_PREFIX = `от`;
+const MIDDLE_PREFIX = `-`;
+const CURRENCY = `&#x20bd;`;
 
-export const featureKeys = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
-const featureValues = [`Wi-Fi`, `Посудомоечная машина`, `Парковка`, `Стиральная машина`, `Кондиционер`];
+const filterValues = {
+  price: {
+    low: 10000,
+    high: 50000,
+    middle: [10000, 50000],
+  },
+};
 
-const filterKeys = [`type`, `price`, `rooms`, `guests`];
 
-const typeKeys = [`any`, `palace`, `flat`, `house`, `bungalo`];
-export const typeValues = [`Любой тип жилья`, `Дворец`, `Квартира`, `Дом`, `Бунгало`];
+export const features = {
+  wifi: `Wi-Fi`,
+  dishwasher: `Посудомоечная машина`,
+  parking: `Парковка`,
+  washer: `Стиральная машина`,
+  elevator: `Лифт`,
+  conditioner: `Кондиционер`,
+};
 
-const priceKeys = [`any`, `middle`, `low`, `high`];
-const priceValues = [`Любая`, `10000 - 50000&#x20bd;`, `до 10000&#x20bd;`, `от 50000&#x20bd;`];
+const type = {
+  any: `Любой тип жилья`,
+  palace: `Дворец`,
+  flat: `Квартира`,
+  house: `Дом`,
+  bungalo: `Бунгало`,
+};
 
-const roomsKeys = [`any`, `1`, `2`, `3`];
-const roomsValues = [`Любое число комнат`, `Одна комната`, `Две комнаты`, `Три комнаты`];
+const price = {
+  any: `Любая`,
+  middle: `${filterValues.price.middle[0]} ${MIDDLE_PREFIX} ${filterValues.price.low[1]}${CURRENCY}`,
+  low: `${LOW_PREFIX} ${filterValues.price.low}${CURRENCY}`,
+  high: `${HIGH_PREFIX} ${filterValues.price.high}${CURRENCY}`,
+};
 
-const guestsKeys = [`any`, `2`, `1`, `0`];
-const guestsValues = [`Любое число гостей`, `Два гостя`, `Один гость`, `Не для гостей`];
+const rooms = {
+  any: `Любое число комнат`,
+  1: `Одна комната`,
+  2: `Две комнаты`,
+  3: `Три комнаты`,
+};
 
-const filterValues = [
-  Utils.createMapArray(typeKeys, typeValues),
-  Utils.createMapArray(priceKeys, priceValues),
-  Utils.createMapArray(roomsKeys, roomsValues),
-  Utils.createMapArray(guestsKeys, guestsValues)
+const guests = {
+  any: `Любое число гостей`,
+  2: `Два гостя`,
+  1: `Один гость`,
+  0: `Не для гостей`,
+};
+
+export const filters = [
+  type,
+  price,
+  rooms,
+  guests,
 ];
-
-export const features = Utils.createMapArray(featureKeys, featureValues);
-export const filters = Utils.createMapArray(filterKeys, filterValues);
 
 export const orderValues = {
   timePeriods: [`12:00`, `13:00`, `14:00`],
@@ -41,7 +70,7 @@ export const orderValues = {
   }
 };
 
-export const URL = {
+export const url = {
   load: `https://javascript.pages.academy/keksobooking/data`,
   upload: `https://javascript.pages.academy/keksobooking`
 };
