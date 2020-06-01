@@ -1,4 +1,4 @@
-import * as Utils from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const createPinTemplate = (pin) => {
   return (
@@ -8,25 +8,13 @@ const createPinTemplate = (pin) => {
   );
 };
 
-export default class PinComponent {
+export default class PinComponent extends AbstractComponent {
   constructor(pin) {
-    this._element = null;
+    super();
     this._pin = pin;
   }
 
   getTemplate() {
     return createPinTemplate(this._pin);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = Utils.createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

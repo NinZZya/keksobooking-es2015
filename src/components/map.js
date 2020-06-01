@@ -1,27 +1,11 @@
-import * as Utils from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const createMapTemplate = () => {
   return (`<section class="map map--faded"></section>`);
 };
 
-export default class MapComponent {
-  constructor() {
-    this._element = null;
-  }
-
+export default class MapComponent extends AbstractComponent {
   getTemplate() {
     return createMapTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = Utils.createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,4 +1,4 @@
-import {featureKeys, typeValues, orderValues} from '../const.js';
+import {orderValues, filters, features} from '../const.js';
 
 const MIN_PRICE = 1000;
 const MAX_PRICE = 1000000;
@@ -7,6 +7,8 @@ const MAX_ROOMS = 5;
 const MIN_GUEST = 1;
 const MAX_GUEST = 10;
 const MIN_FEATURES = 2;
+const TYPE_INDEX = 0;
+const FEATURE_INDEX = 0;
 
 const photos = [
   `http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
@@ -14,7 +16,7 @@ const photos = [
   `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
 ];
 
-const titleKeys = typeValues.slice(1);
+const titleKeys = filters[TYPE_INDEX].type.keys.slice(1);
 const titleValues = [
   [`Огромный прекрасный дворец`, `Маленький ужасный дворец`],
   [`Большая уютная квартира`, `Маленькая неуютная квартира`],
@@ -23,10 +25,11 @@ const titleValues = [
 ];
 
 const typeTitles = new Map();
-titleKeys.forEach((it, i) => {
-  typeTitles.set(it, titleValues[i]);
+titleKeys.forEach((titleKey, index) => {
+  typeTitles.set(titleKey, titleValues[index]);
 });
 
+const featuresTitles = [features.map((feature) => Object.keys(feature)[FEATURE_INDEX])];
 const getRandomInt = (min, max) => {
   return min + Math.floor(Math.random() * (max - min));
 };
@@ -51,6 +54,8 @@ const generateOrder = (avatar) => {
   const locationY = getRandomInt(orderValues.pinCoords.minY, orderValues.pinCoords.maxY);
   const offerType = getRandomArrValue([...typeTitles.keys()]);
   const titleOffer = getRandomArrValue(typeTitles.get(offerType));
+
+
   return (
     {
       'author': {
@@ -65,7 +70,7 @@ const generateOrder = (avatar) => {
         'guests': getRandomInt(MIN_GUEST, MAX_GUEST),
         'checkin': getRandomArrValue(orderValues.timePeriods),
         'checkout': getRandomArrValue(orderValues.timePeriods),
-        'features': getRandomArr(featureKeys, getRandomInt(MIN_FEATURES, featureKeys.length)),
+        'features': getRandomArr(featuresTitles, getRandomInt(MIN_FEATURES, featuresTitles.length)),
         'description': ``,
         'photos': getRandomArr(photos, photos.length)
       },

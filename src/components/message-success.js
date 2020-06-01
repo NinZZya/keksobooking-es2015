@@ -1,4 +1,4 @@
-import * as Utils from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const DEFAULT_MESSAGE = `Ваше объявление<br>успешно размещено!`;
 
@@ -10,25 +10,13 @@ const createMessageSuccessTemplate = (message = DEFAULT_MESSAGE) => {
   );
 };
 
-export default class MessageSuccessComponent {
+export default class MessageSuccessComponent extends AbstractComponent {
   constructor(message) {
-    this._element = null;
+    super();
     this._message = message;
   }
 
   getTemplate() {
     return createMessageSuccessTemplate(this._message);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = Utils.createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

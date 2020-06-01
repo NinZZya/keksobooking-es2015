@@ -1,12 +1,8 @@
-const CHECKBOX_CLASS = `map__checkbox visually-hidden`;
-const LABEL_CLASS = `map__feature`;
-const FEATURE_NAME = `features`;
-const ID_PREFIX = `filter-`;
-
-
 export const createFeature = (feature) => {
+  const key = Object.keys(feature)[0];
+  const value = feature[key];
   return (
-    `<input type="checkbox" name="${FEATURE_NAME}" value="${feature.key}" id="${ID_PREFIX + feature.key}" class="${CHECKBOX_CLASS}">
-    <label class="${LABEL_CLASS} ${LABEL_CLASS}--${feature.key}" for="filter-wifi">${feature.value}</label>`
+    `<input type="checkbox" name="features" value="${key}" id="filter-${key}" class="map__checkbox visually-hidden">
+    <label class="map__feature map__feature--${key}" for="filter-wifi">${value}</label>`
   );
 };

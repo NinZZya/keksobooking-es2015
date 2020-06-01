@@ -11,7 +11,6 @@ import NoticeComponent from './components/notice.js';
 
 import {generateOrders} from './mock/orders.js';
 
-import AbstractComponent from './components/abstract-component.js';
 
 // TODO если делаешь выборку дом то название переменной начинается с символа $
 
@@ -26,17 +25,14 @@ const mainPinComponent = new MainPinComponent();
 
 Utils.render(pinsComponent.getElement(), mainPinComponent, Utils.RenderPosition.BEFOREEND);
 Utils.render(map, new MapFilterComponent(filters, features), Utils.RenderPosition.BEFOREEND);
-const noticeComponent = new NoticeComponent();
-Utils.render($main, noticeComponent, Utils.RenderPosition.BEFOREEND);
+const $noticeComponent = new NoticeComponent();
+Utils.render($main, $noticeComponent, Utils.RenderPosition.BEFOREEND);
 
 const orders = generateOrders(8);
 
 mainPinComponent.getElement().addEventListener(`mousedown`, () => {
   mapComponent.getElement().classList.remove(`map--faded`);
-  orders.map((it) => {
-    Utils.render(pinsComponent.getElement(), new PinComponent(it), Utils.RenderPosition.BEFOREEND);
+  orders.map((order) => {
+    Utils.render(pinsComponent.getElement(), new PinComponent(order), Utils.RenderPosition.BEFOREEND);
   });
 });
-
-const myAbstr = new AbstractComponent();
-myAbstr.getElement();

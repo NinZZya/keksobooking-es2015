@@ -1,20 +1,20 @@
-const FILTER_CLASS = `map__filter`;
-const NAME_PREFIX = `housing-`;
-const ID_PREFIX = `housing-`;
+const DEFAULT_ITEM = `any`;
 
-export const createFilter = (filter) => {
-  const createFilterItem = (item, isSelected) => {
-    return (
-      `<option value="${item.key}" ${isSelected ? `selected` : ``}>
-        ${item.value}
-      </option>`
-    );
-  };
+const createItem = (name, value) => {
+  return (
+    `<option value="${name}" ${name === DEFAULT_ITEM ? `selected` : ``}>
+      ${value}
+    </option>`
+  );
+};
 
-  const filterItems = filter.value.map((it, i) => createFilterItem(it, i === 0)).join(`\n`);
+export const createFilter = (data) => {
+  const filterName = Object.keys(data)[0];
+  const {keys: filterKeys, values: filterValues} = data[filterName];
+  const filterItems = filterKeys.map((key, index) => createItem(key, filterValues[index])).join(`\n`);
 
   return (
-    `<select name="${NAME_PREFIX + filter.key}" id="${ID_PREFIX + filter.key}" class="${FILTER_CLASS}">
+    `<select name="housing-${filterName}" id="housing-${filterName}" class="map__filter">
       ${filterItems}
     </select>`
   );

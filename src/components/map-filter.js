@@ -1,10 +1,10 @@
-import * as Utils from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 import {createFilter} from './filter.js';
 import {createFeature} from './feature.js';
 
 const createMapFilterTemplate = (filters, features) => {
-  const filterLists = filters.map((it) => createFilter(it)).join(`\n`);
-  const featureLists = features.map((it) => createFeature(it)).join(`\n`);
+  const filterLists = filters.map((filter) => createFilter(filter)).join(`\n`);
+  const featureLists = features.map((feature) => createFeature(feature)).join(`\n`);
 
   return (
     `<div class="map__filters-container">
@@ -18,27 +18,14 @@ const createMapFilterTemplate = (filters, features) => {
   );
 };
 
-
-export default class MapFilterComponent {
+export default class MapFilterComponent extends AbstractComponent {
   constructor(filters, features) {
-    this._element = null;
+    super();
     this._filters = filters;
     this._features = features;
   }
 
   getTemplate() {
     return createMapFilterTemplate(this._filters, this._features);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = Utils.createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

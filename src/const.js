@@ -13,49 +13,45 @@ const filterValues = {
 };
 
 
-export const features = {
-  wifi: `Wi-Fi`,
-  dishwasher: `Посудомоечная машина`,
-  parking: `Парковка`,
-  washer: `Стиральная машина`,
-  elevator: `Лифт`,
-  conditioner: `Кондиционер`,
-};
+export const features = [
+  {wifi: `Wi-Fi`},
+  {dishwasher: `Посудомоечная машина`},
+  {parking: `Парковка`},
+  {washer: `Стиральная машина`},
+  {elevator: `Лифт`},
+  {conditioner: `Кондиционер`},
+];
 
 const type = {
-  any: `Любой тип жилья`,
-  palace: `Дворец`,
-  flat: `Квартира`,
-  house: `Дом`,
-  bungalo: `Бунгало`,
+  keys: [`any`, `palace`, `flat`, `house`, `bungalo`],
+  values: [`Любой тип жилья`, `Дворец`, `Квартира`, `Дом`, `Бунгало`],
 };
 
 const price = {
-  any: `Любая`,
-  middle: `${filterValues.price.middle[0]} ${MIDDLE_PREFIX} ${filterValues.price.low[1]}${CURRENCY}`,
-  low: `${LOW_PREFIX} ${filterValues.price.low}${CURRENCY}`,
-  high: `${HIGH_PREFIX} ${filterValues.price.high}${CURRENCY}`,
+  keys: [`any`, `middle`, `low`, `high`],
+  values: [
+    `Любая`,
+    `${filterValues.price.middle[0]} ${MIDDLE_PREFIX} ${filterValues.price.middle[1]}${CURRENCY}`,
+    `${LOW_PREFIX} ${filterValues.price.low}${CURRENCY}`,
+    `${HIGH_PREFIX} ${filterValues.price.high}${CURRENCY}`
+  ]
 };
 
 const rooms = {
-  any: `Любое число комнат`,
-  1: `Одна комната`,
-  2: `Две комнаты`,
-  3: `Три комнаты`,
+  keys: [`any`, `1`, `2`, `3`],
+  values: [`Любое число комнат`, `Одна комната`, `Две комнаты`, `Три комнаты`],
 };
 
 const guests = {
-  any: `Любое число гостей`,
-  2: `Два гостя`,
-  1: `Один гость`,
-  0: `Не для гостей`,
+  keys: [`any`, `2`, `1`, `0`],
+  values: [`Любое число гостей`, `Два гостя`, `Один гость`, `Не для гостей`],
 };
 
 export const filters = [
-  type,
-  price,
-  rooms,
-  guests,
+  {type},
+  {price},
+  {rooms},
+  {guests},
 ];
 
 export const orderValues = {
