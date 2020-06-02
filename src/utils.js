@@ -1,16 +1,16 @@
 const ESK_KEYCODE = 27;
 const ENTER_KEYCODE = 13;
 
-const RenderPosition = {
+export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };
 
-const isEscKeycode = (evt) => {
+export const isEscKeycode = (evt) => {
   return evt.keyCode === ESK_KEYCODE;
 };
 
-const isEnterKeycode = (evt) => {
+export const isEnterKeycode = (evt) => {
   return evt.keyCode === ENTER_KEYCODE;
 };
 
@@ -22,7 +22,7 @@ const isEnterKeycode = (evt) => {
  * @returns {number} Следующий индекс для перехода
  */
 
-const getNextIndex = (elem, arr, startIndex = 0) => {
+export const getNextIndex = (elem, arr, startIndex = 0) => {
   let index = arr.indexOf(elem);
   switch (index) {
     case -1:
@@ -41,7 +41,7 @@ const getNextIndex = (elem, arr, startIndex = 0) => {
 * @returns {String} Слово или окончание для числа
 */
 
-const getEndWord = (number, txt) => {
+export const getEndWord = (number, txt) => {
   const cases = [2, 0, 1, 1, 1, 2];
   let index = 0;
   if (number % 100 > 4 && number % 100 < 20) {
@@ -58,7 +58,7 @@ const getEndWord = (number, txt) => {
  * @param {Object} component DOM-элемент, который необходимо вставить в container
  * @param {string} place Место вставки в container значение afterbegin || beforeend
  */
-const render = (container, component, place) => {
+export const render = (container, component, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(component.getElement());
@@ -75,17 +75,14 @@ const render = (container, component, place) => {
 * @returns {Object} Возвращает DOM элемент
 */
 
-const createElement = (template) => {
+export const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
 
   return newElement.firstChild;
 };
 
-export {RenderPosition};
-export {isEnterKeycode};
-export {isEscKeycode};
-export {getNextIndex};
-export {getEndWord};
-export {render};
-export {createElement};
+export const remove = (component) => {
+  component.getElement().remove();
+  component.removeElement();
+};

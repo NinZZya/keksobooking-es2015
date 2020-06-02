@@ -1,6 +1,6 @@
 import * as Utils from '../utils.js';
 import AbstractComponent from './abstract-component.js';
-import {orderValues} from '../const.js';
+import {orderValues} from '../constants.js';
 
 const createCardTemplate = (card) => {
   const roomsText = Utils.getEndWord(card.offer.rooms, orderValues.roomTexts);
@@ -36,5 +36,9 @@ export default class CardComponent extends AbstractComponent {
 
   getTemplate() {
     return createCardTemplate(this._card);
+  }
+
+  setClickElementHandler(handler) {
+    this.getElement().querySelector(`.popup__close`).addEventListener(`click`, handler);
   }
 }

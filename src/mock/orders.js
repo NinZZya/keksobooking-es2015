@@ -1,4 +1,4 @@
-import {orderValues, filters, features} from '../const.js';
+import {orderValues, filters, features} from '../constants.js';
 
 const MIN_PRICE = 1000;
 const MAX_PRICE = 1000000;

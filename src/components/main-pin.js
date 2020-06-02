@@ -19,4 +19,16 @@ export default class MainPinComponent extends AbstractComponent {
   getTemplate() {
     return createMainPinTemplate();
   }
+
+  setMousedownHandler(handler) {
+    this.getElement().addEventListener(`mousedown`, handler);
+  }
+
+  setMousemoveHandler(handler) {
+    this.getElement().addEventListener(`mousemove`, handler);
+  }
+
+  setMouseupHandler(handler) {
+    this.getElement().addEventListener(`mouseup`, handler);
+  }
 }

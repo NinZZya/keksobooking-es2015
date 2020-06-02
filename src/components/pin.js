@@ -17,4 +17,8 @@ export default class PinComponent extends AbstractComponent {
   getTemplate() {
     return createPinTemplate(this._pin);
   }
+
+  setClickElementHandler(handler) {
+    this.getElement().addEventListener(`click`, handler);
+  }
 }
