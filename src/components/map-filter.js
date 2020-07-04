@@ -1,10 +1,15 @@
 import AbstractComponent from './abstract-component.js';
-import {createFilter} from './filter.js';
-import {createFeature} from './feature.js';
+import {getFiltersTemplate} from './filters.js';
+import {getFeaturesTemplate} from './features.js';
 
-const createMapFilterTemplate = (filters, features) => {
-  const filterLists = filters.map((filter) => createFilter(filter)).join(`\n`);
-  const featureLists = features.map((feature) => createFeature(feature)).join(`\n`);
+const MapFilterSelector = {
+  MAP_FILTER: `.map__filter`,
+  MAP_FEATURE_FILTER: `input[name="features"]`,
+};
+
+const createMapFilterTemplate = () => {
+  const filterLists = getFiltersTemplate();
+  const featureLists = getFeaturesTemplate();
 
   return (
     `<div class="map__filters-container">
@@ -19,13 +24,20 @@ const createMapFilterTemplate = (filters, features) => {
 };
 
 export default class MapFilterComponent extends AbstractComponent {
-  constructor(filters, features) {
+  constructor() {
     super();
-    this._filters = filters;
-    this._features = features;
+    this._mapFiltersElements = null;
+    this._mapFeaturesFiltersElements = null;
   }
-
   getTemplate() {
     return createMapFilterTemplate(this._filters, this._features);
+  }
+
+  getMapFilters() {
+    return this._getCustomElements(this._mapFiltersElements, MapFilterSelector.MAP_FILTER, this.getElement());
+  }
+
+  getMapFeaturesFilters() {
+    return this._getCustomElements(this._mapFeaturesFiltersElements, MapFilterSelector.MAP_FEATURE_FILTER, this.getElement());
   }
 }

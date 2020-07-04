@@ -1,4 +1,5 @@
 import AbstractComponent from './abstract-component.js';
+import {isLeftMouseButtonPressed, isEnterPressed} from '../utils/utils.js';
 
 const createMainPinTemplate = () => {
   return (
@@ -20,15 +21,21 @@ export default class MainPinComponent extends AbstractComponent {
     return createMainPinTemplate();
   }
 
-  setMousedownHandler(handler) {
-    this.getElement().addEventListener(`mousedown`, handler);
+  setMouseDownHandler(handler) {
+    this.getElement().addEventListener(`mousedown`, (evt) => {
+      if (isLeftMouseButtonPressed(evt)) {
+        evt.preventDefault();
+        handler(evt);
+      }
+    });
   }
 
-  setMousemoveHandler(handler) {
-    this.getElement().addEventListener(`mousemove`, handler);
-  }
-
-  setMouseupHandler(handler) {
-    this.getElement().addEventListener(`mouseup`, handler);
+  setKeyDownHandler(handler) {
+    this.getElement().addEventListener(`keydown`, (evt) => {
+      if (isEnterPressed(evt)) {
+        evt.preventDefault();
+        handler(evt);
+      }
+    });
   }
 }

@@ -1,90 +1,117 @@
-import {orderValues, filters, features} from '../constants.js';
+import * as CoordsUtil from '../utils/coords.js';
+import * as Randomazier from '../utils/randomizer.js';
+import {Constant} from '../constants.js';
 
-const MIN_PRICE = 1000;
-const MAX_PRICE = 1000000;
-const MIN_ROOMS = 1;
-const MAX_ROOMS = 5;
-const MIN_GUEST = 1;
-const MAX_GUEST = 10;
 const MIN_FEATURES = 2;
-const TYPE_INDEX = 0;
-const FEATURE_INDEX = 0;
+const AVATARS_COUNT = 8;
+const MAP_MIN_X = 0;
+const MAP_MAX_X = 1200;
+const MAP_MIN_Y = 130;
+const MAP_MAX_Y = 630;
+
+const timePeriods = [`12:00`, `13:00`, `14:00`];
+const features = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+
+const price = {
+  min: 1000,
+  max: 1000000,
+};
+
+const rooms = {
+  min: 1,
+  max: 10,
+};
+
+const guests = {
+  min: 1,
+  max: 10,
+};
+
+const descriptions = [
+  `Великолепный вариан в центре Токио. Подходит как туристам, так и бизнесменам. Дом полностью укомплектован и имеет свежий ремонт.`,
+  `Без интернета, регистрации и СМС. Расположена на краю парка`,
+  `Уютное гнездышко для молодоженов`,
+  `Подходит для всех кто любит тишину.`,
+  `Находится в старинном центре города. Только для тех кто может себе позволить роскошь. Лакеев и прочих жокеев просим не беспокоить.`,
+  `Минимализм во всем. Для самых не требовательных.`,
+  `У нас тут все ништяк. Ларек за углом. Шава 24 часа. Приезжайте! Интернетов нет!`,
+  `Тут красиво, светло и уютно. Кофе и печеньки бесплатно.`,
+  `Квартира на первом этаже. Соседи тихие. Для всех, кто терпеть не может шума и суеты.`,
+];
 
 const photos = [
   `http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
   `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
-  `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
+  `http://o0.github.io/assets/images/tokyo/hotel3.jpg`,
 ];
 
-const titleKeys = filters[TYPE_INDEX].type.keys.slice(1);
-const titleValues = [
-  [`Огромный прекрасный дворец`, `Маленький ужасный дворец`],
-  [`Большая уютная квартира`, `Маленькая неуютная квартира`],
-  [`Красивый гостевой домик`, `Некрасивый негостеприимный домик`],
-  [`Уютное бунгало далеко от моря`, `Неуютное бунгало по коле но в воде`]
+let titles = [
+  `object находится недалеко от метро`,
+  `object с самым красивым видом на центр года`,
+  `object для требовательных и богатых`,
+  `object для командировок`,
+  `object для одиноких путешественников`,
+  `object для компании друзей`,
+  `object для влюбленной пары`,
 ];
 
-const typeTitles = new Map();
-titleKeys.forEach((titleKey, index) => {
-  typeTitles.set(titleKey, titleValues[index]);
-});
+const bookingTypes = Object.keys(Constant.bookingType);
 
-const featuresTitles = [features.map((feature) => Object.keys(feature)[FEATURE_INDEX])];
-const getRandomInt = (min, max) => {
-  return min + Math.floor(Math.random() * (max - min));
+/**
+ *
+ * @param {string} typeBooking Тип объекта бронирования
+ * @return {string} Заголовок объекта бронирования
+ */
+
+const generateTitle = (typeBooking) => {
+  const REPLACE = `object`;
+
+  return Randomazier.getRandomArrValue(titles).replace(REPLACE, typeBooking);
 };
 
-const getRandomArrValue = (arr) => {
-  return arr[Math.floor(Math.random() * arr.length)];
-};
+/**
+ * @return {Object}
+ */
 
-const getRandomArr = (arr, length = arr.length) => {
-  const randomArr = arr.slice();
-  randomArr.sort(() => Math.random() - 0.5);
-  return randomArr.slice(0, length);
-};
-
-const generateAvatarsArray = (COUNT_AVATARS) => {
-  const arrAvatars = new Array(COUNT_AVATARS).fill(``).map((it, i) => (it = `img/avatars/user0${++i}.png`));
-  return getRandomArr(arrAvatars);
-};
-
-const generateOrder = (avatar) => {
-  const locationX = getRandomInt(orderValues.pinCoords.minX, orderValues.pinCoords.maxX);
-  const locationY = getRandomInt(orderValues.pinCoords.minY, orderValues.pinCoords.maxY);
-  const offerType = getRandomArrValue([...typeTitles.keys()]);
-  const titleOffer = getRandomArrValue(typeTitles.get(offerType));
-
-
-  return (
-    {
-      'author': {
-        'avatar': avatar
-      },
-      'offer': {
-        'title': titleOffer,
-        'address': `${locationX}, ${locationY}`,
-        'price': getRandomInt(MIN_PRICE, MAX_PRICE),
-        'type': offerType,
-        'rooms': getRandomInt(MIN_ROOMS, MAX_ROOMS),
-        'guests': getRandomInt(MIN_GUEST, MAX_GUEST),
-        'checkin': getRandomArrValue(orderValues.timePeriods),
-        'checkout': getRandomArrValue(orderValues.timePeriods),
-        'features': getRandomArr(featuresTitles, getRandomInt(MIN_FEATURES, featuresTitles.length)),
-        'description': ``,
-        'photos': getRandomArr(photos, photos.length)
-      },
-      'location': {
-        'x': locationX,
-        'y': locationY
-      }
-    }
+const generateOrder = (order, index) => {
+  let coordsOrder = CoordsUtil.set(
+      Randomazier.getRandomInt(MAP_MIN_X, MAP_MAX_X),
+      Randomazier.getRandomInt(MAP_MIN_Y, MAP_MAX_Y)
   );
+
+  coordsOrder = CoordsUtil.convertToLocation(coordsOrder);
+
+  const bookingType = Randomazier.getRandomArrValue(bookingTypes);
+
+  order = {
+    author: {
+      avatar: `img/avatars/${index < AVATARS_COUNT ? `user0` + (index + 1) : `default`}.png`,
+    },
+    offer: {
+      title: generateTitle(Constant.bookingType[bookingType].title),
+      address: coordsOrder.x + `, ` + coordsOrder.y,
+      price: Randomazier.getRandomInt(price.min, price.max),
+      type: bookingType,
+      rooms: Randomazier.getRandomInt(rooms.min, rooms.max),
+      guests: Randomazier.getRandomInt(guests.min, guests.max),
+      checkin: Randomazier.getRandomArrValue(timePeriods),
+      checkout: Randomazier.getRandomArrValue(timePeriods),
+      features: Randomazier.getRandomArr(features, Randomazier.getRandomInt(MIN_FEATURES, features.length)),
+      description: Randomazier.getRandomArrValue(descriptions),
+      photos: Randomazier.getRandomArr(photos, Randomazier.getRandomInt(1, photos.length + 1)),
+    },
+    location: {
+      x: coordsOrder.x,
+      y: coordsOrder.y
+    }
+  };
+
+  return order;
 };
 
-const generateOrders = (COUNT_ORDERS) => {
-  const avatars = generateAvatarsArray(COUNT_ORDERS);
-  return new Array(COUNT_ORDERS).fill(``).map((it, i) => generateOrder(avatars[i]));
-};
+/**
+ * @param {number} count Количество карточек букинга
+ * @return {Object[]} Массив карточек букинга
+ */
 
-export {generateOrders};
+export const generateOrders = (count) => new Array(count).fill(``).map(generateOrder);
