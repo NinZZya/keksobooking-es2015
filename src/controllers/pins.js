@@ -22,15 +22,39 @@ export default class PinsController {
     this._cardContainer = null;
     this._cardPlace = null;
   }
+  /**
+   * @description Активирует контроллер. Установкаглавного пина по уомолчанию
+   */
 
   activate() {
     this.setDefaultMainPin();
   }
 
+  /**
+   * @description Деактивирует контроллер. Установкаглавного пина по уомолчанию
+   */
+
+  deactivate() {
+    // Установить главный пин по умолчанию
+    this.setDefaultMainPin();
+    // Удалить пины
+    this.removePins();
+    // Удалить активную карточку
+    this._removeActiveCard();
+  }
+
+  /**
+   * @description Устанавливает главный пин по умолчанию
+   */
+
   setDefaultMainPin() {
     this._mainPinComponent.getElement().style.left = `${Default.MAIN_PIN_LEFT}px`;
     this._mainPinComponent.getElement().style.top = `${Default.MAIN_PIN_TOP}px`;
   }
+
+  /**
+   * @description Возвращает соординаты главного пина по умолчанию (до активации карты)
+   */
 
   getMainPinDefaultCoords() {
     return {
@@ -39,12 +63,20 @@ export default class PinsController {
     };
   }
 
+  /**
+   * @description Возвращает соординаты главного пина после активации карты
+   */
+
   getMainPinCoords() {
     return coordsUtil.convertToCoords(
         this._mainPinComponent.getElement().style.left,
         this._mainPinComponent.getElement().style.top
     );
   }
+
+  /**
+   *@description Отрисовывает пины в контейнере
+   */
 
   renderPins(orders) {
     // Если пины есть
@@ -63,13 +95,27 @@ export default class PinsController {
     this._pinsElements = [];
   }
 
+  /**
+   * @description Устанавливает контейнер, куда отрисовывать карточку
+   * @param {Object} $cardContainer Контейнер, куда отрисовывать карточку
+   */
+
   setCardContainer(cardContainer) {
     this._cardContainer = cardContainer;
   }
 
+  /**
+   * @description Устанавливает место, куда отрисовывать карточку
+   * @param {Object} $cardPlace Место, куда отрисовывать карточку
+   */
+
   setCardPlace(cardPlace) {
     this._cardPlace = cardPlace;
   }
+
+  /**
+   * @description Создать список компонентов по полученным данным не более чем ORDERS_COUNT
+   */
 
   _createPinsComponents(orders) {
     this._pinComponents = orders.slice(0, ORDERS_COUNT).map((order) => {
@@ -91,12 +137,20 @@ export default class PinsController {
     });
   }
 
+  /**
+   * @description Callback для document (нажатие кнопки Esc для закрытия карточки)
+   */
+
   _documentKeyDownHandler(evt) {
     if (isEscPressed(evt)) {
       evt.preventDefault();
       this._сloseCard();
     }
   }
+
+  /**
+   * @description Закрывает карточку
+   */
 
   _сloseCard() {
     // Удалить обработчики событий карточки
@@ -107,6 +161,10 @@ export default class PinsController {
     this._deactivatePin();
   }
 
+  /**
+   * @description Удаляет пины с карты если они есть
+   */
+
   removePins() {
     this._pinComponents.forEach((pinComponent) => {
       // Удалить компонент
@@ -115,6 +173,10 @@ export default class PinsController {
     // Очистить список компонентов
     this._pinComponents = [];
   }
+
+  /**
+   * @description Активирует активный пин
+   */
 
   _activatePin(pinComponent) {
     // Деактивировать активный пин, если он есть
@@ -125,6 +187,10 @@ export default class PinsController {
     this._activePinComponent.toggleState();
   }
 
+  /**
+   * @description Деактивирует активный пин, если он есть
+   */
+
   _deactivatePin() {
     if (this._activePinComponent) {
       // Деактивировать нажатый пин
@@ -133,6 +199,10 @@ export default class PinsController {
       this._activePinComponent = null;
     }
   }
+
+  /**
+   * @description Удаляет активную карточку, если она есть
+   */
 
   _removeActiveCard() {
     if (this._activeCardComponent) {
