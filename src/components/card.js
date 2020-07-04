@@ -81,13 +81,20 @@ export default class CardComponent extends AbstractComponent {
   constructor(order) {
     super();
     this._order = order;
+    this.closeCardClickHandler = null;
+    this.documentKeyDownHandler = null;
   }
 
   getTemplate() {
     return createCardTemplate(this._order);
   }
 
-  setClickCardHandler(handler) {
-    this.getElement().querySelector(`.popup__close`).addEventListener(`click`, handler);
+  addCardListeners() {
+    this.getElement().addEventListener(`click`, this.closeCardClickHandler);
+    document.addEventListener(`keydown`, this.documentKeyDownHandler);
+  }
+
+  removeCardListeners() {
+    document.removeEventListener(`keydown`, this.documentKeyDownHandler);
   }
 }

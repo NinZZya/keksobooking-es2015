@@ -1,6 +1,6 @@
 import PinComponent from '../components/pin.js';
 import CardComponent from '../components/card.js';
-import {render, remove} from '../utils/utils.js';
+import {render, remove, isEscPressed} from '../utils/utils.js';
 import * as coordsUtil from '../utils/coords.js';
 
 const ORDERS_COUNT = 5;
@@ -81,12 +81,30 @@ export default class PinsController {
         const cardComponent = new CardComponent(order);
         this._activeCardComponent = cardComponent;
         render(this._cardContainer, cardComponent.getElement(), this._cardPlace);
-        cardComponent.setClickCardHandler(this._removeActiveCard);
+        cardComponent.closeCardClickHandler = () => this._сloseCard();
+        cardComponent.documentKeyDownHandler = (evt) => this._documentKeyDownHandler(evt);
+        cardComponent.addCardListeners();
       });
 
       this._pinsElements.push(pinComponent.getElement());
       return pinComponent;
     });
+  }
+
+  _documentKeyDownHandler(evt) {
+    if (isEscPressed(evt)) {
+      evt.preventDefault();
+      this._сloseCard();
+    }
+  }
+
+  _сloseCard() {
+    // Удалить обработчики событий карточки
+    this._activeCardComponent.removeCardListeners();
+    // Удалить карточку
+    this._removeActiveCard();
+    // Деактивировать пин карточки
+    this._deactivatePin();
   }
 
   removePins() {
@@ -118,7 +136,7 @@ export default class PinsController {
 
   _removeActiveCard() {
     if (this._activeCardComponent) {
-      // document.removeEventListener(`keydown`, this._keydownHandler);
+      this._activeCardComponent.removeCardListeners();
       remove(this._activeCardComponent);
       this._activeCardComponent = null;
     }
