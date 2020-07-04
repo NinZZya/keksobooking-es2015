@@ -1,4 +1,4 @@
-import AbstractLiveComponent from './abstract-live-component.js';
+import AbstractComponent from './abstract-component.js';
 const TOGGLE_CLASS = `map__pin--active`;
 
 const createPinTemplate = (order) => {
@@ -9,7 +9,7 @@ const createPinTemplate = (order) => {
   );
 };
 
-export default class PinComponent extends AbstractLiveComponent {
+export default class PinComponent extends AbstractComponent {
   constructor(order) {
     super(TOGGLE_CLASS);
     this._order = order;

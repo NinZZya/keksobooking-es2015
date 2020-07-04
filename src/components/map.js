@@ -1,11 +1,11 @@
-import AbstractLiveComponent from './abstract-live-component.js';
+import AbstractComponent from './abstract-component.js';
 const TOGGLE_CLASS = `map--faded`;
 
 const createMapTemplate = () => {
   return (`<section class="map map--faded"></section>`);
 };
 
-export default class MapComponent extends AbstractLiveComponent {
+export default class MapComponent extends AbstractComponent {
   constructor() {
     super(TOGGLE_CLASS);
   }

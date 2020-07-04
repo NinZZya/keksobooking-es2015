@@ -1,4 +1,4 @@
-import AbstractLiveComponent from './abstract-live-component.js';
+import AbstractComponent from './abstract-component.js';
 import {noticeElements} from './notice-elements.js';
 const NoticeSelector = {
   TOGGLE_CLASS: `ad-form--disabled`,
@@ -33,7 +33,7 @@ const createNoticeTemplate = () => {
 };
 
 
-export default class NoticeComponent extends AbstractLiveComponent {
+export default class NoticeComponent extends AbstractComponent {
   constructor() {
     super(NoticeSelector.TOGGLE_CLASS);
     this._titleElement = null;
