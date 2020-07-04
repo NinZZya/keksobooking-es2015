@@ -167,3 +167,31 @@ export const loadImage = (file, previewImageElement) => {
     reader.readAsDataURL(file);
   }
 };
+
+export const throttle = function (callback, ms) {
+  let isThrottled = false;
+  let savedArgs = null;
+  let savedThis = null;
+
+  const wrapper = function () {
+    if (isThrottled) {
+      savedArgs = arguments;
+      savedThis = this;
+      return;
+    }
+
+    callback.apply(this, arguments);
+    isThrottled = true;
+
+    setTimeout(function () {
+      isThrottled = false;
+      if (savedArgs) {
+        wrapper.apply(savedThis. savedArgs);
+        savedArgs = null;
+        savedThis = null;
+      }
+    }, ms);
+  };
+
+  return wrapper;
+};

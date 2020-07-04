@@ -13,13 +13,14 @@ export default class PinComponent extends AbstractComponent {
   constructor(order) {
     super(TOGGLE_CLASS);
     this._order = order;
+    this.clickPinHandler = null;
   }
 
   getTemplate() {
     return createPinTemplate(this._order);
   }
 
-  setClickPinHandler(handler) {
-    this.getElement().addEventListener(`click`, handler);
+  addPinListeners() {
+    this.getElement().addEventListener(`click`, this.clickPinHandler);
   }
 }

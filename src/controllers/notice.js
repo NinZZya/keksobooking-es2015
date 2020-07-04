@@ -32,15 +32,15 @@ export default class NoticeController {
 
     this.setDefaultNotice();
     // Установить функции для обработчиков событий валидации
-    this._setRoomsChangeHandler();
-    this._setTypeChangeHandler();
-    this._setCheckInChangeHandler();
-    this._setCheckOutChangeHandler();
+    this._noticeComponent.roomsChangeHandler = this._roomsChangeHandler.bind(this);
+    this._noticeComponent.typeChangeHandler = this._typeChangeHandler.bind(this);
+    this._noticeComponent.checkInChangeHandler = this._checkInChangeHandler.bind(this);
+    this._noticeComponent.checkOutChangeHandler = this._checkOutChangeHandler.bind(this);
     this._noticeComponent.priceChangeHandler = this._checkValidity;
     this._noticeComponent.titleChangeHandler = this._checkValidity;
     // Установить функции для обработчиков событий  загрузки изображений
-    this._setAvatarChangeHandler();
-    this._setImagesChangeHandler();
+    this._noticeComponent.avatarChangeHandler = this._avatarChangeHandler.bind(this);
+    this._noticeComponent.imagesChangeHandler = this._imagesChangeHandler.bind(this);
   }
 
   /**
@@ -133,8 +133,8 @@ export default class NoticeController {
    */
 
   runLoadImagesListeners() {
-    this._noticeComponent.addAvatarListener();
-    this._noticeComponent.addImagesListener();
+    this._noticeComponent.addAvatarListeners();
+    this._noticeComponent.addImagesListeners();
   }
 
   /**
@@ -142,51 +142,41 @@ export default class NoticeController {
    */
 
   stopLoadImagesListeners() {
-    this._noticeComponent.removeAvatarListener();
-    this._noticeComponent.removeImagesListener();
+    this._noticeComponent.removeAvatarListeners();
+    this._noticeComponent.removeImagesListeners();
   }
 
   /**
    * @description Валидация количества комнат
    */
 
-  _setRoomsChangeHandler() {
-    this._noticeComponent.roomsChangeHandler = (evt) => {
-      this._noticeComponent.getGuests().value = this._getGuests(parseInt(evt.target.value, 10));
-      this._disabledGuestsValues(this._noticeComponent.getGuests().value);
-    };
+  _roomsChangeHandler(evt) {
+    this._noticeComponent.getGuests().value = this._getGuests(parseInt(evt.target.value, 10));
+    this._disabledGuestsValues(this._noticeComponent.getGuests().value);
   }
 
   /**
    * @description Валидация цен типа жилья
    */
 
-  _setTypeChangeHandler() {
-    this._noticeComponent.typeChangeHandler = (evt) => {
-      this._setMinPrice(
-          Constant.bookingType[evt.target.value].minPrice
-      );
-    };
+  _typeChangeHandler(evt) {
+    this._setMinPrice(Constant.bookingType[evt.target.value].minPrice);
   }
 
   /**
    * @description Валидация времени заезада
    */
 
-  _setCheckInChangeHandler() {
-    this._noticeComponent.checkInChangeHandler = (evt) => {
-      this._noticeComponent.getCheckOut().value = evt.target.value;
-    };
+  _checkInChangeHandler(evt) {
+    this._noticeComponent.getCheckOut().value = evt.target.value;
   }
 
   /**
    * @description Валидация времени выезда
    */
 
-  _setCheckOutChangeHandler() {
-    this._noticeComponent.checkOutChangeHandler = (evt) => {
-      this._noticeComponent.getCheckIn().value = evt.target.value;
-    };
+  _checkOutChangeHandler(evt) {
+    this._noticeComponent.getCheckIn().value = evt.target.value;
   }
 
   /**
@@ -240,37 +230,33 @@ export default class NoticeController {
    * @description Загружает изображение для аватара
    */
 
-  _setAvatarChangeHandler() {
-    this._noticeComponent.avatarChangeHandler = () => {
-      const file = this._noticeComponent.getAvatar().files[0];
-      const previewImageElement = this._noticeComponent.getAvatarPreview().querySelector(PREVIEW_SELECTOR);
-      loadImage(file, previewImageElement);
-    };
+  _avatarChangeHandler() {
+    const file = this._noticeComponent.getAvatar().files[0];
+    const previewImageElement = this._noticeComponent.getAvatarPreview().querySelector(PREVIEW_SELECTOR);
+    loadImage(file, previewImageElement);
   }
 
   /**
    * @description Загружает изображение для фотографии жилья
    */
-  _setImagesChangeHandler() {
-    this._noticeComponent.imagesChangeHandler = () => {
-      const files = this._noticeComponent.getImages().files;
-      this._clearImagesContainer();
-      const previewContainerElement = this._noticeComponent.getImagesContainer();
-      let previewElement = this._noticeComponent.getImagesPreview();
+  _imagesChangeHandler() {
+    const files = this._noticeComponent.getImages().files;
+    this._clearImagesContainer();
+    const previewContainerElement = this._noticeComponent.getImagesContainer();
+    let previewElement = this._noticeComponent.getImagesPreview();
 
-      Array.from(files).forEach((file) => {
-        if (!previewElement.querySelector(PREVIEW_SELECTOR)) {
-          const previewImageElement = document.createElement(`img`);
-          loadImage(file, previewImageElement);
-          render(previewElement, previewImageElement, RenderPosition.BEFOREEND);
-        } else {
-          previewElement = previewElement.cloneNode(true);
-          const previewImageElement = previewElement.querySelector(PREVIEW_SELECTOR);
-          loadImage(file, previewImageElement);
-          render(previewContainerElement, previewElement, RenderPosition.BEFOREEND);
-        }
-      });
-    };
+    Array.from(files).forEach((file) => {
+      if (!previewElement.querySelector(PREVIEW_SELECTOR)) {
+        const previewImageElement = document.createElement(`img`);
+        loadImage(file, previewImageElement);
+        render(previewElement, previewImageElement, RenderPosition.BEFOREEND);
+      } else {
+        previewElement = previewElement.cloneNode(true);
+        const previewImageElement = previewElement.querySelector(PREVIEW_SELECTOR);
+        loadImage(file, previewImageElement);
+        render(previewContainerElement, previewElement, RenderPosition.BEFOREEND);
+      }
+    });
   }
 
   /**

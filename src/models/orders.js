@@ -1,5 +1,3 @@
-import {getByID} from '../utils/utils.js';
-
 const FILTER_ALL = `any`;
 const filterPrice = {
   low: 10000,
@@ -45,10 +43,6 @@ export default class OrdersModel {
       orderModel.id = id;
       return orderModel;
     });
-  }
-
-  getOrderByID(id) {
-    return getByID(this._orders, parseInt(id, 10));
   }
 
   getOrdersByFilters() {
