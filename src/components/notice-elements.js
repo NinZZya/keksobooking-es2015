@@ -6,7 +6,7 @@ const fieldsetHeader = (
         <img src="img/muffin-grey.svg" alt="Аватар пользователя" width="40" height="44">
       </div>
       <div class="ad-form__field">
-        <input type="file" id="avatar" name="avatar" class="ad-form-header__input visually-hidden">
+        <input type="file" id="avatar" name="avatar" class="ad-form-header__input visually-hidden" accept="image/*">
         <label class="ad-form-header__drop-zone" for="avatar">Загрузить<br>фото...</label>
       </div>
       <p class="ad-form-header__info">Заполните все обязательные поля, назначьте цену, загрузите фотографии. Придумайте интересное описание. Оно сделает объявление более живым и привлекательным. Получившееся объявление должно давать гостям полное представление о вашем жилье.</p>
@@ -17,14 +17,14 @@ const fieldsetHeader = (
 const fieldsetTitle = (
   `<fieldset class="ad-form__element ad-form__element--wide">
     <label class="ad-form__label" for="title">Заголовок объявления</label>
-    <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио">
+    <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" required minlength="30" maxlength="100">
   </fieldset>`
 );
 
 const fieldsetAddress = (
   `<fieldset class="ad-form__element ad-form__element--wide">
     <label class="ad-form__label" for="address">Адрес</label>
-    <input id="address" name="address" type="text">
+    <input id="address" name="address" type="text" readonly>
   </fieldset>`
 );
 
@@ -43,7 +43,7 @@ const fieldsetType = (
 const fieldsetPrice = (
   `<fieldset class="ad-form__element">
     <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
-    <input id="price" name="price" type="number" placeholder="5000" min="1000" max="1000000">
+    <input id="price" name="price" type="number" placeholder="5000" max="1000000">
   </fieldset>`
 );
 
@@ -117,7 +117,7 @@ const fieldsetPhotos = (
     <label class="ad-form__label">Фотография жилья</label>
     <div class="ad-form__photo-container">
       <div class="ad-form__upload">
-        <input type="file" id="images" name="images" class="ad-form__input visually-hidden">
+        <input type="file" id="images" name="images" class="ad-form__input visually-hidden" accept="image/png, image/jpeg" multiple>
         <label for="images" class="ad-form__drop-zone">Загрузить<br>фото...</label>
       </div>
       <div class="ad-form__photo"></div>

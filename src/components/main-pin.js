@@ -16,19 +16,23 @@ const createMainPinTemplate = () => {
 };
 
 export default class MainPinComponent extends AbstractComponent {
+  constructor() {
+    super();
+    this.mainPinMouseDownHandler = null;
+    this.mainPinKeyDownHandler = null;
+  }
+
   getTemplate() {
     return createMainPinTemplate();
   }
 
-  setMousedownHandler(handler) {
-    this.getElement().addEventListener(`mousedown`, handler);
+  addEventListener() {
+    this.getElement().addEventListener(`mousedown`, this.mainPinMouseDownHandler);
+    this.getElement().addEventListener(`keydown`, this.mainPinKeyDownHandler);
   }
 
-  setMousemoveHandler(handler) {
-    this.getElement().addEventListener(`mousemove`, handler);
-  }
-
-  setMouseupHandler(handler) {
-    this.getElement().addEventListener(`mouseup`, handler);
+  removeEventListener() {
+    this.getElement().removeEventListener(`mousedown`, this.mainPinMouseDownHandler);
+    this.getElement().removeEventListener(`keydown`, this.mainPinKeyDownHandler);
   }
 }
