@@ -26,6 +26,7 @@ const pinsComponent = new PinsComponent();
 const mainPinComponent = new MainPinComponent();
 const mapFilterComponent = new MapFilterComponent();
 const pinsController = new PinsController(pinsComponent, mainPinComponent);
+const noticeController = new NoticeController(noticeComponent);
 
 
 // Координаты главного пина
@@ -41,7 +42,7 @@ const setCoordsToAdress = (coords, isDefault) => {
     ? pinsController.getMainPinDefaultCoords()
     : coordsUtil.convertToLocation(coords);
   // Установить адресс в форму
-  // adFormController.setAddress(coords);
+  noticeComponent.getAddress().value = `${coords.x}, ${coords.y}`;
 };
 
 /**
@@ -151,6 +152,18 @@ const mainPinKeyDownHandler = (evt) => {
   }
 };
 
+/**
+ *
+ * @description Функции для события submit у формы
+ */
+
+const formSubmitHandler = (evt) => {
+  if (evt.target.checkValidity()) {
+    // backendController.upload(evt.target);
+    evt.preventDefault();
+  }
+};
+
 const activateMap = () => {
   // Получить координаты главного пина
   coordsMainPin = pinsController.getMainPinCoords();
@@ -158,26 +171,26 @@ const activateMap = () => {
   setCoordsToAdress(coordsMainPin);
   // Переключить состояние карты на активное
   mapComponent.toggleState();
-  // // Переключить форму в активное состояние.
-  // adFormController.toggleState();
-  // // Запустить валидацию формы.
-  // adFormController.runValidity();
-  // // Загрузить обработчики событий preview для аватара и изображений
-  // adFormController.runLoadImagesListeners();
+  // Переключить форму в активное состояние.
+  noticeController.toggleState();
+  // Запустить валидацию формы.
+  noticeController.runValidity();
+  // Загрузить обработчики событий preview для аватара и изображений
+  noticeController.runLoadImagesListeners();
   // // Положить данные в модель данных
   ordersModel.setOrders(orders);
   // Установить контейнер, куда отрисовывать карточку
   pinsController.setCardContainer(mapComponent.getElement());
   // Установить место, куда отрисовывать карточку
   pinsController.setCardPlace(mapFilterComponent.getElement());
-  // // Установить функцию для события отправки формы
-  // adFormComponent.adFormSubmitHandler = adFormSubmitHandler;
-  // // Запустить обработчики события для отправки формы
-  // adFormComponent.addAdFormSubmitListener();
-  // // Установить callbak для обработчика события кнопки reset
-  // adFormComponent.adFormResetHandler = deactivateMap;
-  // // Запустить обработчики события кнопки reset
-  // adFormComponent.addAdFormResetListener();
+  // Установить функцию для события отправки формы
+  noticeComponent.formSubmitHandler = formSubmitHandler;
+  // Запустить обработчики события для отправки формы
+  noticeComponent.addFormSubmitListener();
+  // Установить callbak для обработчика события кнопки reset
+  noticeComponent.formResetHandler = deactivateMap;
+  // Запустить обработчики события кнопки reset
+  noticeComponent.addFormResetListener();
   setDefaultFilters();
   if (ordersModel.isOrdersExist()) {
     // mainMapComponent.mapFiltersHandler = util.debounce(mapFiltersHandler);
@@ -186,6 +199,30 @@ const activateMap = () => {
     // Отрисовать пины на карте
     mapFiltersHandler();
   }
+};
+
+/**
+ * @param {Object} evt Событие
+  * @description Деактивация карты
+  */
+
+const deactivateMap = () => {
+  // Переключить состояние карты на неактивное
+  mapComponent.toggleState();
+  // Установить значение пина по умолчанию в поле адресс формы
+  setCoordsToAdress(coordsMainPin, true);
+  // Установка фильтров по умолчанию
+  setDefaultFilters();
+  // Деактивировать контроллер контейнера с пинами (сброс настроек компонента по умолчанию)
+  pinsController.deactivate();
+  // Деактивировать контроллер контейнера с пинами (сброс настроек компонента по умолчанию)
+  noticeController.deactivate();
+  // Удалить обработчик отправки формы
+  noticeComponent.removeFormSubmitListener();
+  // Удалить обработчик события кнопки reset
+  noticeComponent.removeFormResetListener();
+  // // Удалить обработчик события фильтров
+  // mapFilterComponent.removeEventListeners();
 };
 
 const start = () => {
@@ -202,6 +239,7 @@ render(pinsComponent, mainPinComponent, RenderPosition.BEFOREEND);
 render(mapComponent, mapFilterComponent, RenderPosition.BEFOREEND);
 
 pinsController.activate();
+noticeController.activate();
 
 mainPinComponent.mainPinMouseDownHandler = mainPinMouseDownHandler;
 mainPinComponent.mainPinKeyDownHandler = mainPinKeyDownHandler;

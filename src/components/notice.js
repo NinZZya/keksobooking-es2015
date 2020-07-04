@@ -1,7 +1,9 @@
 import AbstractComponent from './abstract-component.js';
 import {noticeElements} from './notice-elements.js';
+
 const NoticeSelector = {
-  TOGGLE_CLASS: `ad-form--disabled`,
+  FORM: `.ad-form`,
+  TOGGLE_FORM_CLASS: `ad-form--disabled`,
   TITLE: `#title`,
   AVATAR: `#avatar`,
   AVATAR_PREVIEW: `.ad-form-header__preview`,
@@ -35,7 +37,8 @@ const createNoticeTemplate = () => {
 
 export default class NoticeComponent extends AbstractComponent {
   constructor() {
-    super(NoticeSelector.TOGGLE_CLASS);
+    super();
+    this._formElement = null;
     this._titleElement = null;
     this._avatarElement = null;
     this._avatarPreviewElement = null;
@@ -50,68 +53,96 @@ export default class NoticeComponent extends AbstractComponent {
     this._typeElement = null;
     this._checkInElement = null;
     this._checkOutElement = null;
+    this._descriptionElement = null;
     this._resetBtnElement = null;
     this._featuresElements = null;
     this._fieldsetsElements = null;
+
+    this.titleChangeHandler = null;
+    this.avatarChangeHandler = null;
+    this.roomsChangeHandler = null;
+    this.imagesChangeHandler = null;
+    this.priceChangeHandler = null;
+    this.typeChangeHandler = null;
+    this.checkInChangeHandler = null;
+    this.checkOutChangeHandler = null;
+    this.formSubmitHandler = null;
+    this.formResetHandler = null;
   }
 
   getTemplate() {
     return createNoticeTemplate();
   }
 
-  getTitleElement() {
+  getForm() {
+    return this._getCustomElement(this._formElement, NoticeSelector.FORM, this.getElement());
+  }
+
+  getTitle() {
     return this._getCustomElement(this._titleElement, NoticeSelector.TITLE, this.getElement());
   }
 
-  getAvatarElement() {
+  getAvatar() {
     return this._getCustomElement(this._avatarElement, NoticeSelector.AVATAR, this.getElement());
   }
 
-  getAvatarPreviewElement() {
+  getAvatarPreview() {
     return this._getCustomElement(this._avatarPreviewElement, NoticeSelector.AVATAR_PREVIEW, this.getElement());
   }
 
-  getRoomsElement() {
+  getAddress() {
+    return this._getCustomElement(this._addressElement, NoticeSelector.ADDRESS, this.getElement());
+  }
+
+  getRooms() {
     return this._getCustomElement(this._roomsElement, NoticeSelector.ROOM, this.getElement());
   }
 
-  getGuestsElement() {
+  getGuests() {
     return this._getCustomElement(this._guestsElement, NoticeSelector.GUEST, this.getElement());
   }
 
-  getImageContainerElement() {
+  getImagesContainer() {
     return this._getCustomElement(this._imagesContainerElement, NoticeSelector.IMAGES_CONTAINER, this.getElement());
   }
 
-  getImagesElement() {
+  getImages() {
     return this._getCustomElement(this._imagesElement, NoticeSelector.IMAGES, this.getElement());
   }
 
-  getImagesPreviewElement() {
+  getImagesPreview() {
     return this._getCustomElement(this._imagesPreviewElement, NoticeSelector.IMAGES_PREVIEW, this.getElement());
   }
 
-  getImagesPreviewsElements() {
+  getImagesPreviews() {
     return this._getCustomElements(this._imagesPreviewsElements, NoticeSelector.IMAGES_PREVIEW, this.getElement());
   }
 
-  getPriceElement() {
+  getAllImagesPreviews() {
+    return this._getCustomElements(this._imagesPreviewsElements, NoticeSelector.IMAGES_PREVIEW, this.getElement());
+  }
+
+  getPrice() {
     return this._getCustomElement(this._priceElement, NoticeSelector.PRICE, this.getElement());
   }
 
-  getTypeElement() {
-    return this._getCustomElement(this._typeElement, NoticeSelector.TITLE, this.getElement());
+  getType() {
+    return this._getCustomElement(this._typeElement, NoticeSelector.TYPE, this.getElement());
   }
 
-  getCheckInElement() {
+  getCheckIn() {
     return this._getCustomElement(this._checkInElement, NoticeSelector.CHECK_IN, this.getElement());
   }
 
-  getCheckOutElement() {
+  getCheckOut() {
     return this._getCustomElement(this._checkOutElement, NoticeSelector.CHECK_OUT, this.getElement());
   }
 
-  getAdResetBtn() {
+  getDescription() {
+    return this._getCustomElement(this._descriptionElement, NoticeSelector.DESCRIPTION, this.getElement());
+  }
+
+  getResetBtn() {
     return this._getCustomElement(this._resetBtnElement, NoticeSelector.RESET_BTN, this.getElement());
   }
 
@@ -123,6 +154,14 @@ export default class NoticeComponent extends AbstractComponent {
     return this._getCustomElements(this._$fieldsets, NoticeSelector.FIELDSET, this.getElement());
   }
 
+  isFormActivate() {
+    return !this.getForm().classList.contains(NoticeSelector.TOGGLE_FORM_CLASS);
+  }
+
+  toggleStateForm() {
+    this.getForm().classList.toggle(NoticeSelector.TOGGLE_FORM_CLASS);
+  }
+
   toggleStateFieldsets() {
     this._getFieldsets().forEach((fieldsetElement) => {
       fieldsetElement.disabled = !fieldsetElement.disabled;
@@ -131,5 +170,55 @@ export default class NoticeComponent extends AbstractComponent {
 
   isActivateFieldsets() {
     return !this._getFieldsets()[0].disabled;
+  }
+
+  addNoticeValidityListeners() {
+    this.getTitle().addEventListener(`change`, this.titleChangeHandler);
+    this.getRooms().addEventListener(`change`, this.roomsChangeHandler);
+    this.getType().addEventListener(`change`, this.typeChangeHandler);
+    this.getPrice().addEventListener(`change`, this.priceChangeHandler);
+    this.getCheckIn().addEventListener(`change`, this.checkInChangeHandler);
+    this.getCheckOut().addEventListener(`change`, this.checkOutChangeHandler);
+  }
+
+  removeNoticeValidityListeners() {
+    this.getTitle().removeEventListener(`change`, this.titleChangeHandler);
+    this.getRooms().removeEventListener(`change`, this.roomsChangeHandler);
+    this.getType().removeEventListener(`change`, this.typeChangeHandler);
+    this.getPrice().removeEventListener(`change`, this.priceChangeHandler);
+    this.getCheckIn().removeEventListener(`change`, this.checkInChangeHandler);
+    this.getCheckOut().removeEventListener(`change`, this.checkOutChangeHandler);
+  }
+
+  addFormSubmitListener() {
+    this.getElement().addEventListener(`submit`, this.formSubmitHandler);
+  }
+
+  removeFormSubmitListener() {
+    this.getElement().removeEventListener(`submit`, this.formSubmitHandler);
+  }
+
+  addFormResetListener() {
+    this.getResetBtn().addEventListener(`click`, this.formResetHandler);
+  }
+
+  removeFormResetListener() {
+    this.getResetBtn().removeEventListener(`click`, this.formResetHandler);
+  }
+
+  addAvatarListener() {
+    this.getAvatar().addEventListener(`change`, this.avatarChangeHandler);
+  }
+
+  removeAvatarListener() {
+    this.getAvatar().removeEventListener(`change`, this.avatarChangeHandler);
+  }
+
+  addImagesListener() {
+    this.getImages().addEventListener(`change`, this.imagesChangeHandler);
+  }
+
+  removeImagesListener() {
+    this.getImages().removeEventListener(`change`, this.imagesChangeHandler);
   }
 }

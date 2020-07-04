@@ -1,8 +1,9 @@
-import AbstractComponent from "../components/abstract-component";
+import AbstractComponent from '../components/abstract-component';
 
 const ESK_KEYCODE = 27;
 const ENTER_KEYCODE = 13;
 const LEFT_MOUSE_BUTTON = 0;
+const FILE_TYPES = [`gif`, `svg`, `jpg`, `jpeg`, `png`];
 
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
@@ -145,13 +146,24 @@ export const remove = (component) => {
 };
 
 /**
- *
- * @param {Object[]} array Массив объектов
- * @param {object} id Идентификатор
+ * @description Устанавливает изображение file в $preview
+ * @param {Object} file Объект file
+ * @param {Object} $previewImage DOM элемент для вставки изображения
  */
 
-export const getByID = (array, id) => {
-  return array.filter(function (item) {
-    return item.id === id;
-  })[0];
+export const loadImage = (file, previewImageElement) => {
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some(function (fileType) {
+    return fileName.endsWith(fileType);
+  });
+
+  if (matches) {
+    const reader = new FileReader();
+
+    reader.addEventListener(`load`, function () {
+      previewImageElement.src = reader.result;
+    });
+
+    reader.readAsDataURL(file);
+  }
 };
