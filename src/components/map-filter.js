@@ -1,6 +1,6 @@
-import AbstractComponent from './abstract-component.js';
-import {getFiltersTemplate} from './filters.js';
-import {getFeaturesTemplate} from './features.js';
+import AbstractComponent from './abstract-component';
+import {getFiltersTemplate} from './filters';
+import {getFeaturesTemplate} from './features';
 
 const MapFilterSelector = {
   FORM: `.map__filters`,

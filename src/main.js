@@ -1,18 +1,18 @@
-import {render, RenderPosition, isLeftMouseButtonPressed, isEnterPressed, throttle} from './utils/utils.js';
-import * as coordsUtil from './utils/coords.js';
+import {render, RenderPosition, isLeftMouseButtonPressed, isEnterPressed, throttle} from './utils/utils';
+import * as coordsUtil from './utils/coords';
 
-import OrdersModel from './models/orders.js';
+import OrdersModel from './models/orders';
 
-import МapComponent from './components/map.js';
-import NoticeComponent from './components/notice.js';
-import PinsComponent from './components/pins.js';
-import MainPinComponent from './components/main-pin.js';
-import MapFiltersComponent from './components/map-filter.js';
+import МapComponent from './components/map';
+import NoticeComponent from './components/notice';
+import PinsComponent from './components/pins';
+import MainPinComponent from './components/main-pin';
+import MapFiltersComponent from './components/map-filter';
 
-import PinsController from './controllers/pins.js';
-import NoticeController from './controllers/notice.js';
+import PinsController from './controllers/pins';
+import NoticeController from './controllers/notice';
 
-import {generateOrders} from './mock/orders.js';
+import {generateOrders} from './mock/orders';
 
 const orders = generateOrders(8);
 const DEFAULT_FILTER_INDEX = 0;

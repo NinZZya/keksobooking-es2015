@@ -1,7 +1,7 @@
-import PinComponent from '../components/pin.js';
-import CardComponent from '../components/card.js';
-import {render, remove, isEscPressed} from '../utils/utils.js';
-import * as coordsUtil from '../utils/coords.js';
+import PinComponent from '../components/pin';
+import CardComponent from '../components/card';
+import {render, remove, isEscPressed} from '../utils/utils';
+import * as coordsUtil from '../utils/coords';
 
 const ORDERS_COUNT = 5;
 

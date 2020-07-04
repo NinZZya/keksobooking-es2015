@@ -1,4 +1,4 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractComponent from './abstract-component';
 const TOGGLE_CLASS = `map__pin--active`;
 
 const createPinTemplate = (order) => {

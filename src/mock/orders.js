@@ -1,6 +1,6 @@
-import * as CoordsUtil from '../utils/coords.js';
-import * as Randomazier from '../utils/randomizer.js';
-import {Constant} from '../constants.js';
+import * as CoordsUtil from '../utils/coords';
+import * as Randomazier from '../utils/randomizer';
+import {Constant} from '../constants';
 
 const MIN_FEATURES = 2;
 const AVATARS_COUNT = 8;

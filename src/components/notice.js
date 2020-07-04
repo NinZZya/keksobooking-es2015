@@ -1,5 +1,5 @@
-import AbstractComponent from './abstract-component.js';
-import {noticeElements} from './notice-elements.js';
+import AbstractComponent from './abstract-component';
+import {noticeElements} from './notice-elements';
 
 const NoticeSelector = {
   FORM: `.ad-form`,

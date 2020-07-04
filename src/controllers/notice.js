@@ -1,5 +1,5 @@
-import {Constant} from '../constants.js';
-import {render, RenderPosition, loadImage} from '../utils/utils.js';
+import {Constant} from '../constants';
+import {render, RenderPosition, loadImage} from '../utils/utils';
 
 // Индекс значения по умолчанию
 const DefaultIndex = {

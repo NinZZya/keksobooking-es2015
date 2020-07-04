@@ -1,6 +1,6 @@
-import {getEndWord} from '../utils/utils.js';
-import AbstractComponent from './abstract-component.js';
-import {Constant} from '../constants.js';
+import {getEndWord} from '../utils/utils';
+import AbstractComponent from './abstract-component';
+import {Constant} from '../constants';
 
 const ROOM_TEXTS = [`комната`, `комнаты`, `комнат`];
 const GUEST_TEXTS = [`гостя`, `гостей`, `гостей`];
