@@ -1,5 +1,8 @@
 import {render, RenderPosition, isLeftMouseButtonPressed, isEnterPressed, throttle} from './utils/utils';
 import * as coordsUtil from './utils/coords';
+import {Constant} from './constants';
+
+import API from './api';
 
 import OrdersModel from './models/orders';
 
@@ -12,14 +15,14 @@ import MapFiltersComponent from './components/map-filter';
 import PinsController from './controllers/pins';
 import NoticeController from './controllers/notice';
 
-import {generateOrders} from './mock/orders';
+// import {generateOrders} from './mock/orders';
 
-const orders = generateOrders(8);
+// const orders = generateOrders(8);
 const DEFAULT_FILTER_INDEX = 0;
 const THROTTLE_MS = 500;
+const END_POINT = `https://javascript.pages.academy/keksobooking`;
 
-const mainElement = document.querySelector(`main`);
-
+const api = new API(END_POINT);
 const ordersModel = new OrdersModel();
 const mapComponent = new МapComponent();
 const noticeComponent = new NoticeComponent();
@@ -165,7 +168,7 @@ const formSubmitHandler = (evt) => {
   }
 };
 
-const activateMap = () => {
+const activateMap = (orders) => {
   // Получить координаты главного пина
   coordsMainPin = pinsController.getMainPinCoords();
   // Конвертация и установка координат
@@ -228,13 +231,13 @@ const deactivateMap = () => {
 
 const start = () => {
   if (!mapComponent.isActivate()) {
-    activateMap();
+    api.load(activateMap);
   }
 };
 
 
-render(mainElement, mapComponent, RenderPosition.BEFOREEND);
-render(mainElement, noticeComponent, RenderPosition.BEFOREEND);
+render(Constant.mainContainer, mapComponent, RenderPosition.BEFOREEND);
+render(Constant.mainContainer, noticeComponent, RenderPosition.BEFOREEND);
 render(mapComponent, pinsComponent, RenderPosition.AFTERBEGIN);
 render(pinsComponent, mainPinComponent, RenderPosition.BEFOREEND);
 render(mapComponent, mapFiltersComponent, RenderPosition.BEFOREEND);

@@ -19,4 +19,5 @@ export const Constant = {
     },
   },
   defaultAvatar: `./img/muffin-grey.svg`,
+  mainContainer: document.querySelector(`main`),
 };

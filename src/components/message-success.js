@@ -1,22 +1,16 @@
 import AbstractComponent from './abstract-component';
 
-const DEFAULT_MESSAGE = `Ваше объявление<br>успешно размещено!`;
-
-const createMessageSuccessTemplate = (message = DEFAULT_MESSAGE) => {
+const createMessageSuccessTemplate = () => {
   return (
     `<div class="success">
-      <p class="success__message">${message}</p>
+      <p class="success__message">Ваше объявление<br>успешно размещено!</p>
     </div>`
   );
 };
 
 export default class MessageSuccessComponent extends AbstractComponent {
-  constructor(message) {
-    super();
-    this._message = message;
-  }
 
   getTemplate() {
-    return createMessageSuccessTemplate(this._message);
+    return createMessageSuccessTemplate();
   }
 }

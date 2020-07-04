@@ -36,8 +36,8 @@ export default class NoticeController {
     this._noticeComponent.typeChangeHandler = this._typeChangeHandler.bind(this);
     this._noticeComponent.checkInChangeHandler = this._checkInChangeHandler.bind(this);
     this._noticeComponent.checkOutChangeHandler = this._checkOutChangeHandler.bind(this);
-    this._noticeComponent.priceChangeHandler = this._checkValidity;
-    this._noticeComponent.titleChangeHandler = this._checkValidity;
+    this._noticeComponent.priceChangeHandler = this._priceChangeHandler.bind(this);
+    this._noticeComponent.titleChangeHandler = this._titleChangeHandler.bind(this);
     // Установить функции для обработчиков событий  загрузки изображений
     this._noticeComponent.avatarChangeHandler = this._avatarChangeHandler.bind(this);
     this._noticeComponent.imagesChangeHandler = this._imagesChangeHandler.bind(this);
@@ -177,6 +177,22 @@ export default class NoticeController {
 
   _checkOutChangeHandler(evt) {
     this._noticeComponent.getCheckIn().value = evt.target.value;
+  }
+
+  /**
+   * @description Валидация значения цены при изменениее
+   */
+
+  _priceChangeHandler(evt) {
+    this._checkValidity(evt);
+  }
+
+  /**
+   * @description Валидация значения заголовка при изменениее
+   */
+
+  _titleChangeHandler(evt) {
+    this._checkValidity(evt);
   }
 
   /**

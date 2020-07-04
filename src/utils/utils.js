@@ -87,14 +87,14 @@ const createRenderFragment = (elements) => {
   const fragment = document.createDocumentFragment();
 
   elements.forEach(function (element) {
-    const rendElement = getRenderElement(element);
+    const rendElement = getDOMElement(element);
     fragment.appendChild(rendElement);
   });
 
   return fragment;
 };
 
-const getRenderElement = (element) => element instanceof AbstractComponent ? element.getElement() : element;
+const getDOMElement = (element) => element instanceof AbstractComponent ? element.getElement() : element;
 
 /**
  * @description Вставляет <$element> в <$container> на место <place>
@@ -105,16 +105,16 @@ const getRenderElement = (element) => element instanceof AbstractComponent ? ele
 
 export const render = (container, element, place) => {
   let rendElement = null;
-  const rendContainer = getRenderElement(container);
+  const rendContainer = getDOMElement(container);
 
   if (Array.isArray(element)) {
     rendElement = createRenderFragment(element);
   } else {
-    rendElement = getRenderElement(element);
+    rendElement = getDOMElement(element);
   }
 
   if (place instanceof Object) {
-    const rendPlace = getRenderElement(place);
+    const rendPlace = getDOMElement(place);
     rendContainer.insertBefore(rendElement, rendPlace);
   } else {
     renderElement(rendContainer, rendElement, place);
@@ -168,12 +168,12 @@ export const loadImage = (file, previewImageElement) => {
   }
 };
 
-export const throttle = function (callback, ms) {
+export function throttle(callback, ms) {
   let isThrottled = false;
   let savedArgs = null;
   let savedThis = null;
 
-  const wrapper = function () {
+  function wrapper() {
     if (isThrottled) {
       savedArgs = arguments;
       savedThis = this;
@@ -191,7 +191,7 @@ export const throttle = function (callback, ms) {
         savedThis = null;
       }
     }, ms);
-  };
+  }
 
   return wrapper;
-};
+}

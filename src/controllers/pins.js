@@ -126,7 +126,7 @@ export default class PinsController {
         const cardComponent = new CardComponent(order);
         this._activeCardComponent = cardComponent;
         this._renderCard(cardComponent);
-        cardComponent.closeCardClickHandler = this._сloseCard.bind(this);
+        cardComponent.closeBtnCardClickHandler = this._closeBtnCardClickHandler.bind(this);
         cardComponent.documentKeyDownHandler = this._documentKeyDownHandler.bind(this);
         cardComponent.addCardListeners();
       };
@@ -147,6 +147,10 @@ export default class PinsController {
       throw new Error(`Container or place for card not exist!`);
     }
     render(this._cardContainer, cardComponent, this._cardPlace);
+  }
+
+  _closeBtnCardClickHandler() {
+    this._сloseCard();
   }
 
   /**

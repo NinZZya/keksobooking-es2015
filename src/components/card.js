@@ -4,6 +4,7 @@ import {Constant} from '../constants';
 
 const ROOM_TEXTS = [`комната`, `комнаты`, `комнат`];
 const GUEST_TEXTS = [`гостя`, `гостей`, `гостей`];
+const BTN_CLASS = `.popup__close`;
 
 const getTitle = (order) => order.offer.title ? `<h3 class="popup__title">${order.offer.title}</h3>` : ``;
 const getAddress = (order) => order.offer.address ? `<p class="popup__text popup__text--address">${order.offer.address}</p>` : ``;
@@ -81,7 +82,7 @@ export default class CardComponent extends AbstractComponent {
   constructor(order) {
     super();
     this._order = order;
-    this.closeCardClickHandler = null;
+    this.closeBtnCardClickHandler = null;
     this.documentKeyDownHandler = null;
   }
 
@@ -90,7 +91,7 @@ export default class CardComponent extends AbstractComponent {
   }
 
   addCardListeners() {
-    this.getElement().addEventListener(`click`, this.closeCardClickHandler);
+    this.getElement().querySelector(BTN_CLASS).addEventListener(`click`, this.closeBtnCardClickHandler);
     document.addEventListener(`keydown`, this.documentKeyDownHandler);
   }
 
