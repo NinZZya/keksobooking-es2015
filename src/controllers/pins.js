@@ -11,12 +11,11 @@ const Default = {
 };
 
 export default class PinsController {
-  constructor(pinsComponent, mainPinComponent, ordersModel) {
+  constructor(pinsComponent, mainPinComponent) {
     this._pinsComponent = pinsComponent;
     this._mainPinComponent = mainPinComponent;
     this._pinComponents = [];
     this._pinsElements = [];
-    this._ordersModel = ordersModel;
     this._activePinComponent = null;
     this._activeCardComponent = null;
     this._cardContainer = null;

@@ -10,6 +10,7 @@ import MainPinComponent from './components/main-pin.js';
 import MapFilterComponent from './components/map-filter.js';
 
 import PinsController from './controllers/pins.js';
+import NoticeController from './controllers/notice.js';
 
 import {generateOrders} from './mock/orders.js';
 
@@ -24,7 +25,8 @@ const noticeComponent = new NoticeComponent();
 const pinsComponent = new PinsComponent();
 const mainPinComponent = new MainPinComponent();
 const mapFilterComponent = new MapFilterComponent();
-const pinsController = new PinsController(pinsComponent, mainPinComponent, ordersModel);
+const pinsController = new PinsController(pinsComponent, mainPinComponent);
+
 
 // Координаты главного пина
 let coordsMainPin = null;
