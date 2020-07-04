@@ -126,8 +126,8 @@ export default class PinsController {
         const cardComponent = new CardComponent(order);
         this._activeCardComponent = cardComponent;
         this._renderCard(cardComponent);
-        cardComponent.closeCardClickHandler = () => this._сloseCard();
-        cardComponent.documentKeyDownHandler = (evt) => this._documentKeyDownHandler(evt);
+        cardComponent.closeCardClickHandler = this._сloseCard.bind(this);
+        cardComponent.documentKeyDownHandler = this._documentKeyDownHandler.bind(this);
         cardComponent.addCardListeners();
       };
 
