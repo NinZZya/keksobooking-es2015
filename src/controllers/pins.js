@@ -120,7 +120,7 @@ export default class PinsController {
     this._pinComponents = orders.slice(0, ORDERS_COUNT).map((order) => {
       // Создать новый копонент пина
       const pinComponent = new PinComponent(order);
-      pinComponent.setClickPinHandler(() => {
+      pinComponent.clickPinHandler = () => {
         this._activatePin(pinComponent);
         this._removeActiveCard();
         const cardComponent = new CardComponent(order);
@@ -129,8 +129,9 @@ export default class PinsController {
         cardComponent.closeCardClickHandler = () => this._сloseCard();
         cardComponent.documentKeyDownHandler = (evt) => this._documentKeyDownHandler(evt);
         cardComponent.addCardListeners();
-      });
+      };
 
+      pinComponent.addPinListeners();
       this._pinsElements.push(pinComponent.getElement());
       return pinComponent;
     });

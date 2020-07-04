@@ -7,7 +7,7 @@ import МapComponent from './components/map.js';
 import NoticeComponent from './components/notice.js';
 import PinsComponent from './components/pins.js';
 import MainPinComponent from './components/main-pin.js';
-import MapFilterComponent from './components/map-filter.js';
+import MapFiltersComponent from './components/map-filter.js';
 
 import PinsController from './controllers/pins.js';
 import NoticeController from './controllers/notice.js';
@@ -24,7 +24,7 @@ const mapComponent = new МapComponent();
 const noticeComponent = new NoticeComponent();
 const pinsComponent = new PinsComponent();
 const mainPinComponent = new MainPinComponent();
-const mapFilterComponent = new MapFilterComponent();
+const mapFiltersComponent = new MapFiltersComponent();
 const pinsController = new PinsController(pinsComponent, mainPinComponent);
 const noticeController = new NoticeController(noticeComponent);
 
@@ -50,13 +50,13 @@ const setCoordsToAdress = (coords, isDefault) => {
  */
 
 const setDefaultFilters = () => {
-  mapFilterComponent.getMapFilters().forEach((filterElement) => {
+  mapFiltersComponent.getFilters().forEach((filterElement) => {
     if (filterElement.id !== `housing-features`) {
       filterElement.value = filterElement[DEFAULT_FILTER_INDEX].value;
     }
   });
 
-  mapFilterComponent.getMapFeaturesFilters().forEach((featuresFilterElement) => {
+  mapFiltersComponent.getFeaturesFilters().forEach((featuresFilterElement) => {
     featuresFilterElement.checked = false;
   });
 };
@@ -67,13 +67,13 @@ const setDefaultFilters = () => {
 
 const setFilterToOrdersModel = () => {
   const features = [];
-  mapFilterComponent.getMapFilters().forEach((filterElement) => {
+  mapFiltersComponent.getFilters().forEach((filterElement) => {
     if (filterElement.id !== `housing-features`) {
       ordersModel.filters[filterElement.id].value = filterElement.value;
     }
   });
 
-  mapFilterComponent.getMapFeaturesFilters().forEach((featuresFilterElement) => {
+  mapFiltersComponent.getFeaturesFilters().forEach((featuresFilterElement) => {
     if (featuresFilterElement.checked) {
       features.push(featuresFilterElement.value);
     }
@@ -86,10 +86,10 @@ const setFilterToOrdersModel = () => {
 * @description Событие на изменение фильтров
 */
 
-function mapFiltersHandler() {
+const mapFiltersHandler = () => {
   setFilterToOrdersModel();
   pinsController.renderPins(ordersModel.getOrdersByFilters());
-}
+};
 
 /**
  * @description Нажатие клавиши мыши по главному пину
@@ -182,20 +182,20 @@ const activateMap = () => {
   // Установить контейнер, куда отрисовывать карточку
   pinsController.setCardContainer(mapComponent.getElement());
   // Установить место, куда отрисовывать карточку
-  pinsController.setCardPlace(mapFilterComponent.getElement());
+  pinsController.setCardPlace(mapFiltersComponent.getElement());
   // Установить функцию для события отправки формы
   noticeComponent.formSubmitHandler = formSubmitHandler;
   // Запустить обработчики события для отправки формы
-  noticeComponent.addFormSubmitListener();
+  noticeComponent.addFormSubmitListeners();
   // Установить callbak для обработчика события кнопки reset
   noticeComponent.formResetHandler = deactivateMap;
   // Запустить обработчики события кнопки reset
-  noticeComponent.addFormResetListener();
+  noticeComponent.addFormResetListeners();
   setDefaultFilters();
   if (ordersModel.isOrdersExist()) {
-    // mainMapComponent.mapFiltersHandler = util.debounce(mapFiltersHandler);
-    // mainMapComponent.toggleStateMapFilters();
-    // mainMapComponent.addMapFiltersListener();
+    mapFiltersComponent.filtersHandler = mapFiltersHandler;
+    mapFiltersComponent.addFilterListeners();
+    mapFiltersComponent.toggleStateFilters();
     // Отрисовать пины на карте
     mapFiltersHandler();
   }
@@ -218,11 +218,11 @@ const deactivateMap = () => {
   // Деактивировать контроллер контейнера с пинами (сброс настроек компонента по умолчанию)
   noticeController.deactivate();
   // Удалить обработчик отправки формы
-  noticeComponent.removeFormSubmitListener();
+  noticeComponent.removeFormSubmitListeners();
   // Удалить обработчик события кнопки reset
-  noticeComponent.removeFormResetListener();
-  // // Удалить обработчик события фильтров
-  // mapFilterComponent.removeEventListeners();
+  noticeComponent.removeFormResetListeners();
+  // Удалить обработчик события фильтров
+  mapFiltersComponent.removeFilterListeners();
 };
 
 const start = () => {
@@ -236,11 +236,14 @@ render(mainElement, mapComponent, RenderPosition.BEFOREEND);
 render(mainElement, noticeComponent, RenderPosition.BEFOREEND);
 render(mapComponent, pinsComponent, RenderPosition.AFTERBEGIN);
 render(pinsComponent, mainPinComponent, RenderPosition.BEFOREEND);
-render(mapComponent, mapFilterComponent, RenderPosition.BEFOREEND);
+render(mapComponent, mapFiltersComponent, RenderPosition.BEFOREEND);
 
 pinsController.activate();
 noticeController.activate();
+if (mapFiltersComponent.isFiltersActivate()) {
+  mapFiltersComponent.toggleStateFilters();
+}
 
 mainPinComponent.mainPinMouseDownHandler = mainPinMouseDownHandler;
 mainPinComponent.mainPinKeyDownHandler = mainPinKeyDownHandler;
-mainPinComponent.addEventListener();
+mainPinComponent.addMainPinListeners();

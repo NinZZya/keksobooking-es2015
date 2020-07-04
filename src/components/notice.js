@@ -162,14 +162,14 @@ export default class NoticeComponent extends AbstractComponent {
     this.getForm().classList.toggle(NoticeSelector.TOGGLE_FORM_CLASS);
   }
 
+  isActivateFieldsets() {
+    return !this._getFieldsets()[0].disabled;
+  }
+
   toggleStateFieldsets() {
     this._getFieldsets().forEach((fieldsetElement) => {
       fieldsetElement.disabled = !fieldsetElement.disabled;
     });
-  }
-
-  isActivateFieldsets() {
-    return !this._getFieldsets()[0].disabled;
   }
 
   addNoticeValidityListeners() {
@@ -190,35 +190,35 @@ export default class NoticeComponent extends AbstractComponent {
     this.getCheckOut().removeEventListener(`change`, this.checkOutChangeHandler);
   }
 
-  addFormSubmitListener() {
+  addFormSubmitListeners() {
     this.getElement().addEventListener(`submit`, this.formSubmitHandler);
   }
 
-  removeFormSubmitListener() {
+  removeFormSubmitListeners() {
     this.getElement().removeEventListener(`submit`, this.formSubmitHandler);
   }
 
-  addFormResetListener() {
+  addFormResetListeners() {
     this.getResetBtn().addEventListener(`click`, this.formResetHandler);
   }
 
-  removeFormResetListener() {
+  removeFormResetListeners() {
     this.getResetBtn().removeEventListener(`click`, this.formResetHandler);
   }
 
-  addAvatarListener() {
+  addAvatarListeners() {
     this.getAvatar().addEventListener(`change`, this.avatarChangeHandler);
   }
 
-  removeAvatarListener() {
+  removeAvatarListeners() {
     this.getAvatar().removeEventListener(`change`, this.avatarChangeHandler);
   }
 
-  addImagesListener() {
+  addImagesListeners() {
     this.getImages().addEventListener(`change`, this.imagesChangeHandler);
   }
 
-  removeImagesListener() {
+  removeImagesListeners() {
     this.getImages().removeEventListener(`change`, this.imagesChangeHandler);
   }
 }

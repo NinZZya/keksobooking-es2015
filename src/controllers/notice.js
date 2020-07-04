@@ -133,8 +133,8 @@ export default class NoticeController {
    */
 
   runLoadImagesListeners() {
-    this._noticeComponent.addAvatarListener();
-    this._noticeComponent.addImagesListener();
+    this._noticeComponent.addAvatarListeners();
+    this._noticeComponent.addImagesListeners();
   }
 
   /**
@@ -142,8 +142,8 @@ export default class NoticeController {
    */
 
   stopLoadImagesListeners() {
-    this._noticeComponent.removeAvatarListener();
-    this._noticeComponent.removeImagesListener();
+    this._noticeComponent.removeAvatarListeners();
+    this._noticeComponent.removeImagesListeners();
   }
 
   /**
