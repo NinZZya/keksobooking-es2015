@@ -1,4 +1,4 @@
-import {render, RenderPosition, isLeftMouseButtonPressed, isEnterPressed} from './utils/utils.js';
+import {render, RenderPosition, isLeftMouseButtonPressed, isEnterPressed, throttle} from './utils/utils.js';
 import * as coordsUtil from './utils/coords.js';
 
 import OrdersModel from './models/orders.js';
@@ -16,6 +16,7 @@ import {generateOrders} from './mock/orders.js';
 
 const orders = generateOrders(8);
 const DEFAULT_FILTER_INDEX = 0;
+const THROTTLE_MS = 500;
 
 const mainElement = document.querySelector(`main`);
 
@@ -193,7 +194,7 @@ const activateMap = () => {
   noticeComponent.addFormResetListeners();
   setDefaultFilters();
   if (ordersModel.isOrdersExist()) {
-    mapFiltersComponent.filtersHandler = mapFiltersHandler;
+    mapFiltersComponent.filtersHandler = throttle(mapFiltersHandler, THROTTLE_MS);
     mapFiltersComponent.addFilterListeners();
     mapFiltersComponent.toggleStateFilters();
     // Отрисовать пины на карте
@@ -240,6 +241,7 @@ render(mapComponent, mapFiltersComponent, RenderPosition.BEFOREEND);
 
 pinsController.activate();
 noticeController.activate();
+
 if (mapFiltersComponent.isFiltersActivate()) {
   mapFiltersComponent.toggleStateFilters();
 }
