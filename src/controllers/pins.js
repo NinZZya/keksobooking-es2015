@@ -126,7 +126,7 @@ export default class PinsController {
         this._removeActiveCard();
         const cardComponent = new CardComponent(order);
         this._activeCardComponent = cardComponent;
-        render(this._cardContainer, cardComponent, this._cardPlace);
+        this._renderCard(cardComponent);
         cardComponent.closeCardClickHandler = () => this._сloseCard();
         cardComponent.documentKeyDownHandler = (evt) => this._documentKeyDownHandler(evt);
         cardComponent.addCardListeners();
@@ -135,6 +135,18 @@ export default class PinsController {
       this._pinsElements.push(pinComponent.getElement());
       return pinComponent;
     });
+  }
+
+  /**
+   * Рендерит карточку если есть контейнер и место вствки
+   * @param {Object} cardComponent Компонент карточки
+   */
+
+  _renderCard(cardComponent) {
+    if (!(this._cardContainer && this._cardPlace)) {
+      throw new Error(`Container or place for card not exist!`);
+    }
+    render(this._cardContainer, cardComponent, this._cardPlace);
   }
 
   /**
