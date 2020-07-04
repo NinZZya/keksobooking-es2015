@@ -11,7 +11,7 @@ import MapFilterComponent from './components/map-filter.js';
 
 import PinsController from './controllers/pins.js';
 
-import { generateOrders } from './mock/orders.js';
+import {generateOrders} from './mock/orders.js';
 
 const orders = generateOrders(8);
 const DEFAULT_FILTER_INDEX = 0;
