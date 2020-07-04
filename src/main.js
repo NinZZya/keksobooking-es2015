@@ -1,4 +1,4 @@
-import {render, RenderPosition} from './utils/utils.js';
+import {render, RenderPosition, isLeftMouseButtonPressed, isEnterPressed} from './utils/utils.js';
 import * as coordsUtil from './utils/coords.js';
 
 import OrdersModel from './models/orders.js';
@@ -94,16 +94,19 @@ function mapFiltersHandler() {
  */
 
 const mainPinMouseDownHandler = (evt) => {
-  start();
+  if (isLeftMouseButtonPressed(evt)) {
+    start();
 
-  // Зафиксировать текущие координаты главного пина
-  coordsEvt.x = evt.clientX;
-  coordsEvt.y = evt.clientY;
-  // Активировать обработчик события на перемещение мыши у главного пина
-  document.addEventListener(`mousemove`, mainPinMouseMoveHandler);
-  // Активировать обработчик события на отпускание клавиши мыши у главного пина
-  document.addEventListener(`mouseup`, mainPinMouseUpHandler);
+    // Зафиксировать текущие координаты главного пина
+    coordsEvt.x = evt.clientX;
+    coordsEvt.y = evt.clientY;
+    // Активировать обработчик события на перемещение мыши у главного пина
+    document.addEventListener(`mousemove`, mainPinMouseMoveHandler);
+    // Активировать обработчик события на отпускание клавиши мыши у главного пина
+    document.addEventListener(`mouseup`, mainPinMouseUpHandler);
+  }
 };
+
 /**
  * @description Перемещение мыши у главного пина
  * @param {*} evt Событие
@@ -138,6 +141,12 @@ const mainPinMouseUpHandler = (evt) => {
   evt.preventDefault();
   document.removeEventListener(`mousemove`, mainPinMouseMoveHandler);
   document.removeEventListener(`mouseup`, mainPinMouseUpHandler);
+};
+
+const mainPinKeyDownHandler = (evt) => {
+  if (isEnterPressed(evt)) {
+    start();
+  }
 };
 
 const activateMap = () => {
@@ -192,7 +201,6 @@ render(mapComponent.getElement(), mapFilterComponent.getElement(), RenderPositio
 
 pinsController.activate();
 
-mainPinComponent.setMouseDownHandler(mainPinMouseDownHandler);
-
-// Установить обработчик клика клавиши у главного пина
-mainPinComponent.setKeyDownHandler(start);
+mainPinComponent.mainPinMouseDownHandler = mainPinMouseDownHandler;
+mainPinComponent.mainPinKeyDownHandler = mainPinKeyDownHandler;
+mainPinComponent.addEventListener();
