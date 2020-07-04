@@ -91,7 +91,7 @@ export default class PinsController {
     // Создать массив пин компонентов
     this._createPinsComponents(orders);
     // Отрисовать пины на карте
-    render(this._pinsComponent.getElement(), this._pinsElements, this._mainPinComponent.getElement());
+    render(this._pinsComponent, this._pinsElements, this._mainPinComponent);
     this._pinsElements = [];
   }
 
@@ -126,7 +126,7 @@ export default class PinsController {
         this._removeActiveCard();
         const cardComponent = new CardComponent(order);
         this._activeCardComponent = cardComponent;
-        render(this._cardContainer, cardComponent.getElement(), this._cardPlace);
+        render(this._cardContainer, cardComponent, this._cardPlace);
         cardComponent.closeCardClickHandler = () => this._сloseCard();
         cardComponent.documentKeyDownHandler = (evt) => this._documentKeyDownHandler(evt);
         cardComponent.addCardListeners();

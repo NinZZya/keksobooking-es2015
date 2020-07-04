@@ -193,11 +193,11 @@ const start = () => {
 };
 
 
-render(mainElement, mapComponent.getElement(), RenderPosition.BEFOREEND);
-render(mainElement, noticeComponent.getElement(), RenderPosition.BEFOREEND);
-render(mapComponent.getElement(), pinsComponent.getElement(), RenderPosition.AFTERBEGIN);
-render(pinsComponent.getElement(), mainPinComponent.getElement(), RenderPosition.BEFOREEND);
-render(mapComponent.getElement(), mapFilterComponent.getElement(), RenderPosition.BEFOREEND);
+render(mainElement, mapComponent, RenderPosition.BEFOREEND);
+render(mainElement, noticeComponent, RenderPosition.BEFOREEND);
+render(mapComponent, pinsComponent, RenderPosition.AFTERBEGIN);
+render(pinsComponent, mainPinComponent, RenderPosition.BEFOREEND);
+render(mapComponent, mapFilterComponent, RenderPosition.BEFOREEND);
 
 pinsController.activate();
 

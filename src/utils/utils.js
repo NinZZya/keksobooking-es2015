@@ -1,3 +1,4 @@
+import AbstractComponent from "../components/abstract-component";
 
 const ESK_KEYCODE = 27;
 const ENTER_KEYCODE = 13;
@@ -84,12 +85,15 @@ const renderElement = (container, element, place) => {
 const createRenderFragment = (elements) => {
   const fragment = document.createDocumentFragment();
 
-  elements.forEach(function ($element) {
-    fragment.appendChild($element);
+  elements.forEach(function (element) {
+    const rendElement = getRenderElement(element);
+    fragment.appendChild(rendElement);
   });
 
   return fragment;
 };
+
+const getRenderElement = (element) => element instanceof AbstractComponent ? element.getElement() : element;
 
 /**
  * @description Вставляет <$element> в <$container> на место <place>
@@ -99,12 +103,20 @@ const createRenderFragment = (elements) => {
  */
 
 export const render = (container, element, place) => {
-  const rendElement = Array.isArray(element) ? createRenderFragment(element) : element;
+  let rendElement = null;
+  const rendContainer = getRenderElement(container);
+
+  if (Array.isArray(element)) {
+    rendElement = createRenderFragment(element);
+  } else {
+    rendElement = getRenderElement(element);
+  }
 
   if (place instanceof Object) {
-    container.insertBefore(rendElement, place);
+    const rendPlace = getRenderElement(place);
+    rendContainer.insertBefore(rendElement, rendPlace);
   } else {
-    renderElement(container, rendElement, place);
+    renderElement(rendContainer, rendElement, place);
   }
 };
 
