@@ -15,9 +15,6 @@ import MapFiltersComponent from './components/map-filter';
 import PinsController from './controllers/pins';
 import NoticeController from './controllers/notice';
 
-// import {generateOrders} from './mock/orders';
-
-// const orders = generateOrders(8);
 const DEFAULT_FILTER_INDEX = 0;
 const THROTTLE_MS = 500;
 const END_POINT = `https://javascript.pages.academy/keksobooking`;
