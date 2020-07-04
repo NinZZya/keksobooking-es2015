@@ -163,8 +163,8 @@ const mainPinKeyDownHandler = (evt) => {
 
 const formSubmitHandler = (evt) => {
   if (evt.target.checkValidity()) {
-    // backendController.upload(evt.target);
     evt.preventDefault();
+    api.upload(new FormData(evt.target));
   }
 };
 

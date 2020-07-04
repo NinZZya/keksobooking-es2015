@@ -1,10 +1,7 @@
-import AbstractComponent from './abstract-component';
-import {isEscPressed} from '../utils/utils';
+import AbstractMessageComponent from './abstract-message';
 
-const MessageErrorSelector = {
-  BTN_CLASS: `.error__button`,
-  MSG_CLASS: `error__message`,
-};
+const MSG_CLASS = `error__message`;
+const BTN_CLASS = `.error__button`;
 
 
 const createMessageErrorTemplate = () => {
@@ -16,37 +13,12 @@ const createMessageErrorTemplate = () => {
   );
 };
 
-export default class MessageErrorComponent extends AbstractComponent {
+export default class ErrorMessageComponent extends AbstractMessageComponent {
+  constructor() {
+    super(MSG_CLASS, BTN_CLASS);
+  }
 
   getTemplate() {
     return createMessageErrorTemplate();
-  }
-
-  addMessageErrorListeners() {
-    this.getElement().addEventListener(`click`, this._clickMessageErrorrHandler.bind(this));
-    this.getElement().querySelector(MessageErrorSelector.BTN_CLASS).addEventListener(`click`, this._clickBtnErrorHandler.bind(this));
-    document.addEventListener(`keydown`, this._documentKeyDownHandler.bind(this));
-  }
-
-  _closeMessageError() {
-    document.removeEventListener(`keydown`, this.closeMessageError);
-    this.getElement().remove();
-    this._element = null;
-  }
-
-  _clickBtnErrorHandler() {
-    this._closeMessageError();
-  }
-
-  _clickMessageErrorrHandler(evt) {
-    if (!evt.target.classList.contains(MessageErrorSelector.MSG_CLASS)) {
-      this._closeMessageError();
-    }
-  }
-
-  _documentKeyDownHandler(evt) {
-    if (isEscPressed(evt)) {
-      this._closeMessageError();
-    }
   }
 }

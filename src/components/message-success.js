@@ -1,6 +1,8 @@
-import AbstractComponent from './abstract-component';
+import AbstractMessageComponent from './abstract-message';
 
-const createMessageSuccessTemplate = () => {
+const MSG_CLASS = `success__message`;
+
+const createSuccessMessageTemplate = () => {
   return (
     `<div class="success">
       <p class="success__message">Ваше объявление<br>успешно размещено!</p>
@@ -8,9 +10,12 @@ const createMessageSuccessTemplate = () => {
   );
 };
 
-export default class MessageSuccessComponent extends AbstractComponent {
+export default class SuccessMessageComponent extends AbstractMessageComponent {
+  constructor() {
+    super(MSG_CLASS);
+  }
 
   getTemplate() {
-    return createMessageSuccessTemplate();
+    return createSuccessMessageTemplate();
   }
 }
