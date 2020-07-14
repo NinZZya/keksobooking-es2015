@@ -1,7 +1,7 @@
-import SuccessMessageComponent from './components/message-success';
-import ErrorMessageComponent from './components/message-error';
+import SuccessMessageComponent from './components/messages/message-success';
+import ErrorMessageComponent from './components/messages/message-error';
 import {render, RenderPosition} from './utils/utils';
-import {Constant} from './constants';
+import {Constant} from './constants/constants';
 
 const Method = {
   GET: `GET`,
@@ -19,13 +19,13 @@ const checkStatus = (response) => {
 const showSuccessMessage = () => {
   const successMessage = new SuccessMessageComponent();
   render(Constant.mainContainer, successMessage, RenderPosition.BEFOREEND);
-  successMessage.addMessageListeners();
+  successMessage.addEventListeners();
 };
 
 const showErrorMessage = () => {
   const errorMessage = new ErrorMessageComponent();
   render(Constant.mainContainer, errorMessage, RenderPosition.BEFOREEND);
-  errorMessage.addMessageListeners();
+  errorMessage.addEventListeners();
 };
 
 export default class API {
@@ -40,11 +40,12 @@ export default class API {
       .then((response) => successLoadHandler(response));
   }
 
-  upload(data) {
+  upload(data, successUploadHandler) {
 
     return this._request({url: ``, method: Method.POST, body: data})
       .then((response) => response.json())
-      .then(showSuccessMessage);
+      .then(showSuccessMessage).
+      then(successUploadHandler);
   }
 
   _request({url, method = Method.GET, body = null}) {

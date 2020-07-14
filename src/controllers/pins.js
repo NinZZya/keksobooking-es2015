@@ -128,10 +128,10 @@ export default class PinsController {
         this._renderCard(cardComponent);
         cardComponent.closeBtnCardClickHandler = this._closeBtnCardClickHandler.bind(this);
         cardComponent.documentKeyDownHandler = this._documentKeyDownHandler.bind(this);
-        cardComponent.addCardListeners();
+        cardComponent.addEventListeners();
       };
 
-      pinComponent.addPinListeners();
+      pinComponent.addEventListeners();
       this._pinsElements.push(pinComponent.getElement());
       return pinComponent;
     });
@@ -170,7 +170,7 @@ export default class PinsController {
 
   _сloseCard() {
     // Удалить обработчики событий карточки
-    this._activeCardComponent.removeCardListeners();
+    this._activeCardComponent.removeEventListeners();
     // Удалить карточку
     this._removeActiveCard();
     // Деактивировать пин карточки
@@ -222,7 +222,7 @@ export default class PinsController {
 
   _removeActiveCard() {
     if (this._activeCardComponent) {
-      this._activeCardComponent.removeCardListeners();
+      this._activeCardComponent.removeEventListeners();
       remove(this._activeCardComponent);
       this._activeCardComponent = null;
     }

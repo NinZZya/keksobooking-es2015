@@ -1,21 +1,20 @@
 import {render, RenderPosition, isLeftMouseButtonPressed, isEnterPressed, throttle} from './utils/utils';
 import * as coordsUtil from './utils/coords';
-import {Constant} from './constants';
+import {Constant} from './constants/constants';
 
 import API from './api';
 
 import OrdersModel from './models/orders';
 
 import МapComponent from './components/map';
-import NoticeComponent from './components/notice';
+import NoticeComponent from './components/notice/notice';
 import PinsComponent from './components/pins';
 import MainPinComponent from './components/main-pin';
-import MapFiltersComponent from './components/map-filter';
+import MapFiltersComponent from './components/map-filter/map-filter';
 
 import PinsController from './controllers/pins';
 import NoticeController from './controllers/notice';
 
-const DEFAULT_FILTER_INDEX = 0;
 const THROTTLE_MS = 500;
 const END_POINT = `https://javascript.pages.academy/keksobooking`;
 
@@ -47,40 +46,25 @@ const setCoordsToAdress = (coords, isDefault) => {
 };
 
 /**
- * @description Сброс фильтров на значение по умолчанию
- */
-
-const setDefaultFilters = () => {
-  mapFiltersComponent.getFilters().forEach((filterElement) => {
-    if (filterElement.id !== `housing-features`) {
-      filterElement.value = filterElement[DEFAULT_FILTER_INDEX].value;
-    }
-  });
-
-  mapFiltersComponent.getFeaturesFilters().forEach((featuresFilterElement) => {
-    featuresFilterElement.checked = false;
-  });
-};
-
-/**
  * @description Событие на изменение фильтров
  */
 
 const setFilterToOrdersModel = () => {
-  const features = [];
-  mapFiltersComponent.getFilters().forEach((filterElement) => {
-    if (filterElement.id !== `housing-features`) {
-      ordersModel.filters[filterElement.id].value = filterElement.value;
-    }
+  const getFeaturesValue = ()=> {
+    return Array.from(mapFiltersComponent.getFeatures().getFilters()).map((featuresFilterElement) => {
+      if (featuresFilterElement.checked) {
+        return featuresFilterElement.value;
+      }
+      return null;
+    });
+  };
+
+  mapFiltersComponent.getFilters().forEach((filterComponent) => {
+    ordersModel.filters[filterComponent.getID()].value = filterComponent.getValue();
   });
 
-  mapFiltersComponent.getFeaturesFilters().forEach((featuresFilterElement) => {
-    if (featuresFilterElement.checked) {
-      features.push(featuresFilterElement.value);
-    }
-  });
+  ordersModel.filters[mapFiltersComponent.getFeatures().getID()].value = getFeaturesValue();
 
-  ordersModel.filters[`housing-features`].value = features;
 };
 
 /**
@@ -161,7 +145,7 @@ const mainPinKeyDownHandler = (evt) => {
 const formSubmitHandler = (evt) => {
   if (evt.target.checkValidity()) {
     evt.preventDefault();
-    api.upload(new FormData(evt.target));
+    api.upload(new FormData(evt.target), deactivateMap);
   }
 };
 
@@ -192,11 +176,11 @@ const activateMap = (orders) => {
   noticeComponent.formResetHandler = deactivateMap;
   // Запустить обработчики события кнопки reset
   noticeComponent.addFormResetListeners();
-  setDefaultFilters();
+  mapFiltersComponent.setDefault();
   if (ordersModel.isOrdersExist()) {
     mapFiltersComponent.filtersHandler = throttle(mapFiltersHandler, THROTTLE_MS);
-    mapFiltersComponent.addFilterListeners();
-    mapFiltersComponent.toggleStateFilters();
+    mapFiltersComponent.addEventListeners();
+    mapFiltersComponent.toggleState();
     // Отрисовать пины на карте
     mapFiltersHandler();
   }
@@ -213,7 +197,7 @@ const deactivateMap = () => {
   // Установить значение пина по умолчанию в поле адресс формы
   setCoordsToAdress(coordsMainPin, true);
   // Установка фильтров по умолчанию
-  setDefaultFilters();
+  mapFiltersComponent.setDefault();
   // Деактивировать контроллер контейнера с пинами (сброс настроек компонента по умолчанию)
   pinsController.deactivate();
   // Деактивировать контроллер контейнера с пинами (сброс настроек компонента по умолчанию)
@@ -223,7 +207,7 @@ const deactivateMap = () => {
   // Удалить обработчик события кнопки reset
   noticeComponent.removeFormResetListeners();
   // Удалить обработчик события фильтров
-  mapFiltersComponent.removeFilterListeners();
+  mapFiltersComponent.removeEventListeners();
 };
 
 const start = () => {
@@ -239,13 +223,15 @@ render(mapComponent, pinsComponent, RenderPosition.AFTERBEGIN);
 render(pinsComponent, mainPinComponent, RenderPosition.BEFOREEND);
 render(mapComponent, mapFiltersComponent, RenderPosition.BEFOREEND);
 
+if (mapFiltersComponent.isActivate()) {
+  mapFiltersComponent.toggleState();
+}
+
 pinsController.activate();
 noticeController.activate();
 
-if (mapFiltersComponent.isFiltersActivate()) {
-  mapFiltersComponent.toggleStateFilters();
-}
+setCoordsToAdress(coordsMainPin, true);
 
 mainPinComponent.mainPinMouseDownHandler = mainPinMouseDownHandler;
 mainPinComponent.mainPinKeyDownHandler = mainPinKeyDownHandler;
-mainPinComponent.addMainPinListeners();
+mainPinComponent.addEventListeners();

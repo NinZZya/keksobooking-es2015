@@ -1,4 +1,4 @@
-import {Constant} from '../constants';
+import {Constant} from '../constants/constants';
 import {render, RenderPosition, loadImage} from '../utils/utils';
 
 // Индекс значения по умолчанию
@@ -69,7 +69,7 @@ export default class NoticeController {
    */
 
   runValidity() {
-    this._noticeComponent.addNoticeValidityListeners();
+    this._noticeComponent.addValidityListeners();
   }
 
   /**
@@ -77,7 +77,7 @@ export default class NoticeController {
    */
 
   stopValidity() {
-    this._noticeComponent.removeNoticeValidityListeners();
+    this._noticeComponent.removeValidityListeners();
   }
 
   /**

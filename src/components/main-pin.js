@@ -26,13 +26,8 @@ export default class MainPinComponent extends AbstractComponent {
     return createMainPinTemplate();
   }
 
-  addMainPinListeners() {
+  addEventListeners() {
     this.getElement().addEventListener(`mousedown`, this.mainPinMouseDownHandler);
     this.getElement().addEventListener(`keydown`, this.mainPinKeyDownHandler);
-  }
-
-  removeMainPinListeners() {
-    this.getElement().removeEventListener(`mousedown`, this.mainPinMouseDownHandler);
-    this.getElement().removeEventListener(`keydown`, this.mainPinKeyDownHandler);
   }
 }

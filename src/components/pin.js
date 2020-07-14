@@ -20,7 +20,7 @@ export default class PinComponent extends AbstractComponent {
     return createPinTemplate(this._order);
   }
 
-  addPinListeners() {
+  addEventListeners() {
     this.getElement().addEventListener(`click`, this.clickPinHandler);
   }
 }

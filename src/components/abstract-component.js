@@ -1,4 +1,5 @@
 import {createElement} from '../utils/utils';
+const TOGGLE_MESSAGE = `A toggle class is`;
 
 export default class AbstractComponent {
   constructor(TOGGLE_CLASS) {
@@ -27,18 +28,18 @@ export default class AbstractComponent {
   }
 
   isActivate() {
-    this._isClassExist(this._TOGGLE_CLASS, `toggle`);
+    this._isExist(this._TOGGLE_CLASS, TOGGLE_MESSAGE);
     return !this.getElement().classList.contains(this._TOGGLE_CLASS);
   }
 
   toggleState() {
-    this._isClassExist(this._TOGGLE_CLASS, `toggle`);
+    this._isExist(this._TOGGLE_CLASS, TOGGLE_MESSAGE);
     this.getElement().classList.toggle(this._TOGGLE_CLASS);
   }
 
-  _isClassExist(className, classNameText) {
-    if (!className) {
-      throw new Error(`A ${classNameText} class not exist`);
+  _isExist(value, classNameText) {
+    if (!value) {
+      throw new Error(`${classNameText} not exist`);
     }
   }
 

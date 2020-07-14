@@ -1,5 +1,5 @@
-import AbstractComponent from './abstract-component';
-import {isEscPressed} from '../utils/utils';
+import AbstractComponent from '../abstract-component';
+import {isEscPressed} from '../../utils/utils';
 
 export default class AbstractMessageComponent extends AbstractComponent {
   constructor(MSG_CLASS, BTN_CLASS) {
@@ -11,7 +11,7 @@ export default class AbstractMessageComponent extends AbstractComponent {
     this._documentKeyDownHandler = this._documentKeyDownHandler.bind(this);
   }
 
-  addMessageListeners() {
+  addEventListeners() {
     if (this._MSG_CLASS) {
       this.getElement().addEventListener(`click`, this._clickAbstractMessageHandler);
     }

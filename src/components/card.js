@@ -1,24 +1,24 @@
 import {getEndWord} from '../utils/utils';
 import AbstractComponent from './abstract-component';
-import {Constant} from '../constants';
+import {Constant} from '../constants/constants';
 
 const ROOM_TEXTS = [`комната`, `комнаты`, `комнат`];
 const GUEST_TEXTS = [`гостя`, `гостей`, `гостей`];
 const BTN_CLASS = `.popup__close`;
 
-const getTitle = (order) => order.offer.title ? `<h3 class="popup__title">${order.offer.title}</h3>` : ``;
-const getAddress = (order) => order.offer.address ? `<p class="popup__text popup__text--address">${order.offer.address}</p>` : ``;
-const getPrice = (order) => order.offer.price ? `<p class="popup__text popup__text--price">${order.offer.price.toLocaleString()}₽/ночь</p>` : ``;
-const getType = (order) => order.offer.type ? `<h4 class="popup__type">${Constant.bookingType[order.offer.type].title}</h4>` : ``;
-const getDescription = (order) => order.offer.description ? `<p class="popup__description">${order.offer.description}</p>` : ``;
+const getTitle = (title) => title ? `<h3 class="popup__title">${title}</h3>` : ``;
+const getAddress = (address) => address ? `<p class="popup__text popup__text--address">${address}</p>` : ``;
+const getPrice = (price) => price ? `<p class="popup__text popup__text--price">${price.toLocaleString()}₽/ночь</p>` : ``;
+const getType = (type) => type ? `<h4 class="popup__type">${Constant.bookingType[type].title}</h4>` : ``;
+const getDescription = (description) => description ? `<p class="popup__description">${description}</p>` : ``;
 
-const getCapacity = (order) => {
-  if (order.offer.rooms && order.offer.guests) {
-    const roomsText = getEndWord(order.offer.rooms, ROOM_TEXTS);
-    const guestsText = getEndWord(order.offer.guests, GUEST_TEXTS);
+const getCapacity = (rooms, guests) => {
+  if (rooms && guests) {
+    const roomsText = getEndWord(rooms, ROOM_TEXTS);
+    const guestsText = getEndWord(guests, GUEST_TEXTS);
     return (
       `<p class="popup__text popup__text--capacity">
-        ${order.offer.rooms} ${roomsText} для ${order.offer.guests} ${guestsText}
+        ${rooms} ${roomsText} для ${guests} ${guestsText}
       </p>`
     );
   }
@@ -26,19 +26,19 @@ const getCapacity = (order) => {
   return ``;
 };
 
-const getOrderTimes = (order) => {
-  if (order.offer.checkin && order.offer.checkout) {
-    return `<p class="popup__text popup__text--time">Заезд после ${order.offer.checkin}, выезд до ${order.offer.checkout}</p>`;
+const getOrderTimes = (checkin, checkout) => {
+  if (checkin && checkout) {
+    return `<p class="popup__text popup__text--time">Заезд после ${checkin}, выезд до ${checkout}</p>`;
   }
 
   return ``;
 };
 
-const getFeatures = (order) => {
-  if (order.offer.features.length) {
+const getFeatures = (features) => {
+  if (features.length) {
     return (
       `<ul class="popup__features">
-        ${order.offer.features.map((feature) => `<li class="popup__feature popup__feature--${feature}"></li>`).join(`\n`)}
+        ${features.map((feature) => `<li class="popup__feature popup__feature--${feature}"></li>`).join(`\n`)}
       </ul>`
     );
   }
@@ -46,11 +46,11 @@ const getFeatures = (order) => {
   return ``;
 };
 
-const getPhotos = (order) => {
-  if (order.offer.photos.length) {
+const getPhotos = (photos) => {
+  if (photos.length) {
     return (
       `<div class="popup__photos">
-        ${order.offer.photos.map((photo) => `<img src="${photo}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join(`\n`)}
+        ${photos.map((photo) => `<img src="${photo}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join(`\n`)}
       </div>`
     );
   }
@@ -59,21 +59,34 @@ const getPhotos = (order) => {
 };
 
 const createCardTemplate = (order) => {
+  const {
+    title,
+    address,
+    price,
+    type,
+    rooms,
+    guests,
+    checkin,
+    checkout,
+    features,
+    description,
+    photos,
+  } = order.offer;
 
-  const avatar = order.author.avatar || Constant.defaultAvatar;
+  const avatar = order.author.avatar;
   return (
     `<article class="map__card popup">
-      <img src="${avatar}" class="popup__avatar" width="70" height="70" alt="Аватар пользователя">
+      <img src="${avatar || Constant.defaultAvatar}" class="popup__avatar" width="70" height="70" alt="Аватар пользователя">
       <button type="button" class="popup__close">Закрыть</button>
-      ${getTitle(order)}
-      ${getAddress(order)}
-      ${getPrice(order)}
-      ${getType(order)}
-      ${getCapacity(order)}
-      ${getOrderTimes(order)}
-      ${getFeatures(order)}
-      ${getDescription(order)}
-      ${getPhotos(order)}
+      ${getTitle(title)}
+      ${getAddress(address)}
+      ${getPrice(price)}
+      ${getType(type)}
+      ${getCapacity(rooms, guests)}
+      ${getOrderTimes(checkin, checkout)}
+      ${getFeatures(features)}
+      ${getDescription(description)}
+      ${getPhotos(photos)}
     </article>`
   );
 };
@@ -90,12 +103,12 @@ export default class CardComponent extends AbstractComponent {
     return createCardTemplate(this._order);
   }
 
-  addCardListeners() {
+  addEventListeners() {
     this.getElement().querySelector(BTN_CLASS).addEventListener(`click`, this.closeBtnCardClickHandler);
     document.addEventListener(`keydown`, this.documentKeyDownHandler);
   }
 
-  removeCardListeners() {
+  removeEventListeners() {
     document.removeEventListener(`keydown`, this.documentKeyDownHandler);
   }
 }
