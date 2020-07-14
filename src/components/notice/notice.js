@@ -1,5 +1,7 @@
-import AbstractComponent from './abstract-component';
-import {noticeElements} from './notice-elements';
+import AbstractComponent from '../abstract-component';
+import NoticeFieldSetComponent from './component/notice-fieldset';
+import {noticeTemplates} from './notice-templates/notice-templates';
+import {createElement, render, RenderPosition} from '../../utils/utils';
 
 const NoticeSelector = {
   FORM: `.ad-form`,
@@ -28,7 +30,6 @@ const createNoticeTemplate = () => {
     `<section class="notice">
       <h2 class="notice__title">Ваше объявление</h2>
       <form class="ad-form ad-form--disabled" method="post" enctype="multipart/form-data" autocomplete="off">
-        ${noticeElements.join(`\n`)}
       </form>
     </section>`
   );
@@ -56,7 +57,7 @@ export default class NoticeComponent extends AbstractComponent {
     this._descriptionElement = null;
     this._resetBtnElement = null;
     this._featuresElements = null;
-    this._fieldsetsElements = null;
+    this._fieldsetsComponents = noticeTemplates.map((noticeTemplate) => new NoticeFieldSetComponent(noticeTemplate));
 
     this.titleChangeHandler = null;
     this.avatarChangeHandler = null;
@@ -72,6 +73,15 @@ export default class NoticeComponent extends AbstractComponent {
 
   getTemplate() {
     return createNoticeTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+      render(this.getForm(), this._fieldsetsComponents, RenderPosition.AFTERBEGIN);
+    }
+
+    return this._element;
   }
 
   getForm() {
@@ -151,7 +161,7 @@ export default class NoticeComponent extends AbstractComponent {
   }
 
   _getFieldsets() {
-    return this._getCustomElements(this._$fieldsets, NoticeSelector.FIELDSET, this.getElement());
+    return this._fieldsetsComponents;
   }
 
   isFormActivate() {
@@ -163,16 +173,14 @@ export default class NoticeComponent extends AbstractComponent {
   }
 
   isActivateFieldsets() {
-    return !this._getFieldsets()[0].disabled;
+    return this._getFieldsets()[0].isActivate();
   }
 
   toggleStateFieldsets() {
-    this._getFieldsets().forEach((fieldsetElement) => {
-      fieldsetElement.disabled = !fieldsetElement.disabled;
-    });
+    this._getFieldsets().forEach((fieldsetComponent) => fieldsetComponent.toggleState());
   }
 
-  addNoticeValidityListeners() {
+  addValidityListeners() {
     this.getTitle().addEventListener(`change`, this.titleChangeHandler);
     this.getRooms().addEventListener(`change`, this.roomsChangeHandler);
     this.getType().addEventListener(`change`, this.typeChangeHandler);
@@ -181,7 +189,7 @@ export default class NoticeComponent extends AbstractComponent {
     this.getCheckOut().addEventListener(`change`, this.checkOutChangeHandler);
   }
 
-  removeNoticeValidityListeners() {
+  removeValidityListeners() {
     this.getTitle().removeEventListener(`change`, this.titleChangeHandler);
     this.getRooms().removeEventListener(`change`, this.roomsChangeHandler);
     this.getType().removeEventListener(`change`, this.typeChangeHandler);
